@@ -20,10 +20,10 @@ import google.ads.AdsDisplayUtil;
 
 public class MainActivity extends ActionBarActivity {
 
-    private boolean useMapBox;
-    private EditText channelEditText;
-    private Switch mSwitch;
-    private String channelName="test1";
+
+    private EditText channelEditText,nameEditText;
+
+    private String channelName="",userName="Android-1";
     private static final String TAG = "Tracker - MainActivity";
 
     // ==============================================================================
@@ -40,31 +40,15 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSwitch = (Switch) findViewById(R.id.switchMaps);
-
-        // Attach a listener to check for changes in state
-        mSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (isChecked) {
-                    useMapBox = true;
-                } else {
-                    useMapBox = false;
-                }
-
-            }
-        });
-
         channelEditText = (EditText) findViewById(R.id.channelEditText);
-        channelEditText.setOnKeyListener(new OnKeyListener() {
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
+      /*  channelEditText.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN)) {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_ENTER:
-                            channelName = channelEditText.getText().toString();
+                            channelName = channelEditText.getText().toString().trim();
                             String message = "Chosen channel: " + channelName;
                             Toast.makeText(MainActivity.this, message,
                                     Toast.LENGTH_SHORT).show();
@@ -78,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
                 return false;
             }
         });
-
+*/
     }
 
     @Override
@@ -93,37 +77,43 @@ public class MainActivity extends ActionBarActivity {
     // ==============================================================================
 
     public void shareLocation(View view) {
-        if (useMapBox) {
-            Log.d(TAG, "Share Location With MapBox Chosen on channel: "
-                    + channelName);
-            //callActivity(MBoxShareLocationActivity.class);
-        } else {
             Log.d(TAG, "Share Location With Google Maps Chosen on channel: "
                     + channelName);
             callActivity(GMapsShareLocationActivity.class);
-        }
-        return;
     }
 
     public void followLocation(View view) {
-        if (useMapBox) {
-            Log.d(TAG, "Follow Location With MapBox Chosen on channel: "
-                    + channelName);
-           // callActivity(MBoxFollowLocationActivity.class);
-        } else {
-            Log.d(TAG, "Follow Location With Google Maps Chosen on channel: "
+        Log.d(TAG, "Follow Location With Google Maps Chosen on channel: "
                     + channelName);
             callActivity(GMapsFollowLocationActivity.class);
-        }
-        return;
     }
 
     private void callActivity(Class<?> cls) {
-        Intent intent = new Intent(this, cls);
-        intent.putExtra("channel", channelName);
-        startActivity(intent);
 
-        AdsDisplayUtil.openBnrIntAdsScreen(MainActivity.this,"","");
+        channelName = channelEditText.getText().toString().trim();
+        userName = nameEditText.getText().toString().trim();
+        String message = "Mobile number : " + channelName;
+
+
+        if(channelName !=null && channelName.length() > 0) {
+
+            Toast.makeText(MainActivity.this, message,
+                    Toast.LENGTH_SHORT).show();
+
+
+            Intent intent = new Intent(this, cls);
+            intent.putExtra("channel", channelName);
+            startActivity(intent);
+
+            AdsDisplayUtil.openBnrIntAdsScreen(MainActivity.this, "", "");
+        }
+        else
+        {
+            message = "Please enter mobile number";
+
+            Toast.makeText(MainActivity.this, message,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

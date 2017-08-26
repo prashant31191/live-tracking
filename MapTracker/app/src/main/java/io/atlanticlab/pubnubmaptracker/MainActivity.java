@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import google.ads.AdsDisplayUtil;
+
 public class MainActivity extends ActionBarActivity {
 
     private boolean useMapBox;
@@ -120,6 +122,8 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, cls);
         intent.putExtra("channel", channelName);
         startActivity(intent);
+
+        AdsDisplayUtil.openBnrIntAdsScreen(MainActivity.this,"","");
     }
 
 }

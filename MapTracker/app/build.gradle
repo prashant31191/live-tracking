@@ -48,6 +48,8 @@ dependencies {
 
     // multidex issues
     compile 'com.android.support:multidex:1.0.0'
+
+    compile project(path: ':googleadssdk')
 }
 
 repositories {

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MapTracker.iml" filepath="$PROJECT_DIR$/MapTracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/googleadssdk/googleadssdk.iml" filepath="$PROJECT_DIR$/googleadssdk/googleadssdk.iml" />
     </modules>
   </component>
 </project>

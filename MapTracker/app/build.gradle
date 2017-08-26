@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        applicationId "io.atlanticlab.pubnubmaptracker"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+
+        // Enabling multidex support.
+        multiDexEnabled true
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g" //specify the heap size for the dex process
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.google.android.gms:play-services:6.5.87'
+
+    // pubnumlatest sdk
+    //compile group: 'com.pubnub', name: 'pubnub', version: '4.0.5'
+    compile group: 'com.pubnub', name: 'pubnub-gson', version: '4.6.0'
+
+    // for the google imputable hashmap
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+
+    // datetime utils
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.4'
+
+
+    // multidex issues
+    compile 'com.android.support:multidex:1.0.0'
+}
+
+repositories {
+    mavenCentral()
+}

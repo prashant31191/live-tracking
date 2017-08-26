@@ -1,0 +1,179 @@
+package io.atlanticlab.pubnubmaptracker;
+
+/**
+ * Created by norvan on 1/22/15.
+ */
+
+import android.util.Log;
+
+
+import com.google.android.gms.maps.model.LatLng;
+import com.pubnub.api.PNConfiguration;
+import com.pubnub.api.PubNub;
+import com.pubnub.api.callbacks.PNCallback;
+import com.pubnub.api.callbacks.SubscribeCallback;
+import com.pubnub.api.models.consumer.PNPublishResult;
+import com.pubnub.api.models.consumer.PNStatus;
+import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
+import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
+import com.google.common.collect.ImmutableMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class PubNubManager {
+
+    private static LatLng mLatLng;
+    public static final String GOOGLE_MAP_KEY = "AIzaSyDbma9fzwvndbIxfWfxJYTO-5hvyuAblMk";     // Replace with your GOOGLE MAP key
+    public static  String UUID_NAME = "jonny_android";     // Replace with your publish key
+    public static  String UUID_MessageText = "\"==This is the messages=\"";     // Replace with your publish key
+
+/*
+    public static final String PUBNUB_PUBLISH_KEY = "pub-c-9c3ed212-a25d-4715-8643-14d2761757d6";     // Replace with your publish key
+    public static final String PUBNUB_SUBSCRIBE_KEY = "sub-c-b1cc8a3c-f906-11e6-b0ac-0619f8945a4f";   // Replace with your subscribe key
+    public static final String PUBNUB_SECRET_KEY = "sec-c-ZTEwYmIzMDItYThlNS00YzRlLTg2ZjQtMzk5MzNhMzQ4Yzk3";   // Replace with your sceret key
+   */
+
+
+
+    public static final String PUBNUB_PUBLISH_KEY = "pub-c-e2a499c9-c269-44ec-8d75-487c10193115";     // Replace with your publish key
+    public static final String PUBNUB_SUBSCRIBE_KEY = "sub-c-e60fdc70-8a2b-11e7-91ed-aa3b4df5deac";   // Replace with your subscribe key
+    public static final String PUBNUB_SECRET_KEY = "sec-c-ZmM3YjBhNjctNmZmYi00OTliLWJkNmYtYjM5MjFjYjdkNGU3";   // Replace with your sceret key
+
+
+
+    // public static final String PUBNUB_AUTH_KEY = "Authkey-555";   // Replace with your auth key
+    // public static final String CHANNEL_NAME = "channel-west";     // replace with more meaningful channel name
+
+    public final static String TAG = "==PUBNUB==";
+
+    public static PubNub startPubnub() {
+        Log.d(TAG, "Initializing PubNub");
+        PNConfiguration config = new PNConfiguration();
+
+        config.setPublishKey(PubNubManager.PUBNUB_PUBLISH_KEY);
+        config.setSubscribeKey(PubNubManager.PUBNUB_SUBSCRIBE_KEY);
+        config.setSecretKey(PubNubManager.PUBNUB_SECRET_KEY);
+
+        //config.setAuthKey(PubNubManager.PUBNUB_AUTH_KEY);
+        config.setUuid(UUID_NAME);
+
+        config.setSecure(true);
+
+        Log.e("==UUID=","==app=====>>");
+
+        return new PubNub(config);
+    }
+
+    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,
+                                         double longitude, double altitude) {
+
+        JSONObject json_message = new JSONObject();
+        try {
+
+            json_message.put("sender", UUID_NAME);
+            json_message.put("message", UUID_MessageText);
+            json_message.put("timestamp", DateTimeUtil.getTimeStampUtc());
+
+
+            json_message.put("lat", latitude);
+            json_message.put("lng", longitude);
+            json_message.put("alt", altitude);
+
+
+
+
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.toString());
+        }
+        /*slatitude = ""+latitude;
+        slongitude = ""+longitude;
+        saltitude = ""+altitude;*/
+
+        /*final Map<String, String> message = ImmutableMap.<String, String>of(
+
+                "sender", "app",
+                "lat", "23.0018051",
+                "lng", "72.5017013"
+              *//*  "message", mMessage.getText().toString(),
+                "timestamp", DateTimeUtil.getTimeStampUtc()*//*
+        );*/
+
+        Map<String, String> message = new HashMap<String, String>();
+        message.put("name", "Josh");
+        message.put("id", "1");
+        message.put("usertype", "1");
+        message.put("data", "add any data");
+        message.put("message", "hello how are you ?");
+        message.put("lat", ""+latitude);
+        message.put("lng", ""+longitude);
+        message.put("alt", ""+altitude);
+        message.put("timestamp", ""+DateTimeUtil.getTimeStampUtc());
+
+
+        Log.d(TAG, "Sending JSON ####broadcastLocation#### Message: " + json_message.toString());
+        //pubnub.publish(channelName, UUID_MessageText, publishCallback);
+        pubnub.addListener(publishCallback);
+       // pubnub.publish().channel(CHANNEL_NAME).message(message).async(
+        pubnub.publish().channel(channelName).message(message).async(
+                new PNCallback<PNPublishResult>() {
+                    @Override
+                    public void onResponse(PNPublishResult result, PNStatus status) {
+                        try {
+                            if (!status.isError()) {
+                              //111  Log.v(TAG, "publish(" + JsonUtil.asJson(result) + ")");
+                            } else {
+                              //111  Log.v(TAG, "publishErr(" + JsonUtil.asJson(status) + ")");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+        );
+
+    }
+
+
+
+    public static SubscribeCallback publishCallback = new SubscribeCallback() {
+
+        @Override
+        public void status(PubNub pubnub, PNStatus status) {
+
+        }
+
+        @Override
+        public void message(PubNub pubnub, PNMessageResult message) {
+
+            try {
+                Log.v(TAG, "message---send--->>(" + message.getMessage() + ")");
+                 //111       Log.v(TAG, "message--->>(" + JsonUtil.asJson(message) + ")");
+
+
+              /*  JSONObject jsonMessage = (JSONObject) message;
+                double mLat = jsonMessage.getDouble("lat");
+                double mLng = jsonMessage.getDouble("lng");
+                mLatLng = new LatLng(mLat, mLng);
+
+                Log.d("PUBNUB==1==", "--SET Lat--"+mLat);
+                Log.d("PUBNUB==2==", "--SET Lng--"+mLng);*/
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+
+        }
+
+        @Override
+        public void presence(PubNub pubnub, PNPresenceEventResult presence) {
+            Log.v(TAG, "presence--->>(" + presence + ")");
+        }
+
+    };
+}

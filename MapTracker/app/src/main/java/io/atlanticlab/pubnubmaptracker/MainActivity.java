@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.mapanim.MapsActivity;
+
 import google.ads.AdsDisplayUtil;
 
 public class MainActivity extends ActionBarActivity {
@@ -113,6 +115,12 @@ public class MainActivity extends ActionBarActivity {
 
             Toast.makeText(MainActivity.this, message,
                     Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, MapsActivity.class);
+            intent.putExtra("channel", channelName);
+            startActivity(intent);
+
+
         }
     }
 

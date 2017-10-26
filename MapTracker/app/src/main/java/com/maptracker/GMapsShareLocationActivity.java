@@ -9,7 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,6 +59,7 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
     private String channelName  = "channel-west";
 
     Switch swAutoZoom;
+    ImageView ivChat;
     boolean isAutoZoom = true;
 
     // =============================================================================================
@@ -113,6 +116,14 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isAutoZoom =  isChecked;
+            }
+        });
+
+        ivChat = (ImageView) findViewById(R.id.ivChat);
+        ivChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GMapsShareLocationActivity.this,ChattingActivity.class));
             }
         });
     }

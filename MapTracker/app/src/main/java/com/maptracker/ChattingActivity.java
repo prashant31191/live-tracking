@@ -1,17 +1,27 @@
 package com.maptracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.maptracker.PubNubManager;
+import com.models.CommentListModel;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
 import com.pubnub.api.callbacks.SubscribeCallback;
@@ -29,87 +39,89 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.access_manager.PNAccessManagerGrantResult;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
+import com.utils.PreferencesKeys;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.maptracker.R;
-import com.utils.PreferencesKeys;
-
-import static com.maptracker.PubNubManager.*;
-
-public class GMapsFollowLocationActivity extends ActionBarActivity implements
-        OnMapReadyCallback {
+public class ChattingActivity extends ActionBarActivity {
 
     // =========================================================================
     // Properties
     // =========================================================================
 
-    private static final String TAG = "Tracker - GMaps Follow";
+    private static final String TAG = "=ChattingActivity=";
 
     private boolean isFirstMessage = true;
-    private boolean isAutoZoom = true;
     private boolean mRequestingLocationUpdates = false;
     private MenuItem mFollowButton;
 
-    // Google Maps
-    private GoogleMap mGoogleMap;
-    //	private Polyline mPolyline;
-    private PolylineOptions mPolylineOptions;
-    private Marker mMarker;
-    private MarkerOptions mMarkerOptions;
-    private LatLng mLatLng;
-
     // PubNub
     private PubNub mPubNub;
-    private String channelName  = "channel-west";
+    private String channelName  = "channel-chat";
 
-    Switch swAutoZoom;
-    ImageView ivChat;
+
 
     // =========================================================================
     // Activity Life Cycle
     // =========================================================================
 
+    ImageView ivSend;
+    EditText etMsg;
+
+    NestedScrollView nsvComment;
+    RecyclerView recyclerView;
+
+
+    NotificationAdapter notificationAdapter;
+    public ArrayList<CommentListModel> arrayListAllCommentListModel = new ArrayList<>();
+
+    String  strMessage = "";
+    String  strName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gmaps_view);
+        setContentView(R.layout.activity_chatting);
 
         // Get Channel Name
         Intent intent = getIntent();
-        channelName = intent.getExtras().getString("channel");
-        Log.d(TAG, "Passed Channel Name: " + channelName);
+        /*channelName = intent.getExtras().getString("channel");
+        Log.d(TAG, "Passed Channel Name: " + channelName);*/
 
         if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) !=null && App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo).length() >1)
         {
             channelName = App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo);
+
+
+            Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
+
+            channelName = channelName + "_chat";
             Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
         }
 
-        swAutoZoom = (Switch) findViewById(R.id.swAutoZoom);
-        swAutoZoom.setChecked(isAutoZoom);
+        ivSend = (ImageView) findViewById(R.id.ivSend);
+        etMsg = (EditText) findViewById(R.id.etMsg);
+        nsvComment = (NestedScrollView) findViewById(R.id.nsvComment);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        setCommentData();
 
-        swAutoZoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isAutoZoom =  isChecked;
-            }
-        });
-
-        ivChat = (ImageView) findViewById(R.id.ivChat);
-        ivChat.setOnClickListener(new View.OnClickListener() {
+        ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GMapsFollowLocationActivity.this,ChattingActivity.class));
+                // Broadcast information on PubNub Channel
+                strMessage = etMsg.getText().toString().trim();
+
+                if(mPubNub !=null && strMessage.length() > 0) {
+                    PubNubManager.broadcastLocation(mPubNub, channelName, strMessage);
+                    etMsg.setText("");
+                }
             }
         });
 
-        // Set up View: Map & Action Bar
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
@@ -122,16 +134,7 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
         return true;
     }
 
-    // =========================================================================
-    // Map CallBacks
-    // =========================================================================
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        mGoogleMap = map;
-        mGoogleMap.setMyLocationEnabled(true);
-        Log.d(TAG, "Map Ready");
-    }
 
     // =========================================================================
     // Button CallBacks
@@ -160,12 +163,10 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
 
 
     private void startFollowingLocation() {
-        initializePolyline();
-
         // Start PubNub
         mPubNub = PubNubManager.startPubnub();
         mPubNub.grant()
-                .channels(Arrays.asList(channelName, "channel-east"))
+                .channels(Arrays.asList(channelName, "channel-chatall"))
                 //.authKeys(Arrays.asList("Authkey-555", "Authkey-666"))
                 .manage(true)
                 .read(true)
@@ -250,24 +251,32 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
 
 
                     // {"message":"hello how are you ?","id":"1","alt":"0.0","name":"Josh","data":"add any data","lng":"72.501697","usertype":"1","lat":"23.0019311"}
+                    
 
-                    if(mainObject.has("lat")) {
-                        double mLat = mainObject.getDouble("lat");
-                        double mLng = mainObject.getDouble("lng");
+                    if(mainObject.has("message")) {
+                        strMessage = mainObject.getString("message");
+                        Log.e("====", "==message==strMessage ==" + strMessage );
 
+                    } if(mainObject.has("name")) {
+                        strName = mainObject.getString("name");
+                        Log.e("====", "==name==strName ==" + strName );
 
-                        Log.e("====", "====mLat======" + mLat);
-                        Log.e("====", "====mLng======" + mLng);
-
-                        mLatLng = new LatLng(mLat, mLng);
                     }
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            updatePolyline();
-                            updateCamera();
-                            updateMarker();
+                            
+                            if(strMessage.length() >1 && strName.length() >1)
+                            {
+                                arrayListAllCommentListModel.add(new CommentListModel(strMessage,strName));
+
+                                if(notificationAdapter !=null) {
+                                    notificationAdapter.notifyDataSetChanged();
+                                    recyclerView.smoothScrollToPosition(notificationAdapter.getItemCount());
+                                }
+                            }
+
                         }
                     });
                 } catch (Exception e) {
@@ -288,47 +297,126 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
 
     }
 
+
+    private void setCommentData()
+    {
+        
+        
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChattingActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        
+        notificationAdapter = new NotificationAdapter(ChattingActivity.this, arrayListAllCommentListModel);
+        recyclerView.setAdapter(notificationAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        nsvComment.getParent().requestChildFocus(nsvComment, nsvComment);
+
+    }
+
+    public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.VersionViewHolder> {
+        ArrayList<CommentListModel> mArrListCommentListModel;
+        Context mContext;
+
+
+        public NotificationAdapter(Context context, ArrayList<CommentListModel> arrayListFollowers) {
+            mArrListCommentListModel = arrayListFollowers;
+            mContext = context;
+        }
+
+        @Override
+        public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.raw_comments, viewGroup, false);
+            VersionViewHolder viewHolder = new VersionViewHolder(view);
+            return viewHolder;
+        }
+
+
+        @Override
+        public void onBindViewHolder(final VersionViewHolder versionViewHolder, final int i) {
+            try {
+                CommentListModel commentListModel = mArrListCommentListModel.get(i);
+
+                versionViewHolder.tvName.setText(commentListModel.strName);
+                versionViewHolder.tvComment.setText(commentListModel.strMessage);
+
+                versionViewHolder.tvNameOther.setText(commentListModel.strName);
+                versionViewHolder.tvCommentOther.setText(commentListModel.strMessage);
+
+                if(strName.equalsIgnoreCase(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName)))
+                {
+                    versionViewHolder.rlUserData.setVisibility(View.VISIBLE);
+                    versionViewHolder.rlUserDataOther.setVisibility(View.GONE);
+                }
+                else
+                {
+                    versionViewHolder.rlUserData.setVisibility(View.GONE);
+                    versionViewHolder.rlUserDataOther.setVisibility(View.VISIBLE);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return mArrListCommentListModel.size();
+        }
+
+
+
+
+
+        class VersionViewHolder extends RecyclerView.ViewHolder {
+
+            TextView tvName, tvComment;
+            TextView tvNameOther, tvCommentOther;
+
+            RelativeLayout rlMain;
+            RelativeLayout rlUserData;
+            RelativeLayout rlUserDataOther;
+
+            public VersionViewHolder(View itemView) {
+                super(itemView);
+
+
+                rlMain = (RelativeLayout) itemView.findViewById(R.id.rlMain);
+                rlUserData = (RelativeLayout) itemView.findViewById(R.id.rlUserData);
+                rlUserDataOther = (RelativeLayout) itemView.findViewById(R.id.rlUserDataOther);
+
+                tvName = (TextView) itemView.findViewById(R.id.tvName);
+                tvComment = (TextView) itemView.findViewById(R.id.tvComment);
+                tvNameOther  = (TextView) itemView.findViewById(R.id.tvNameOther);
+                tvCommentOther  = (TextView) itemView.findViewById(R.id.tvCommentOther);
+
+
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
     private void stopFollowingLocation() {
         //111
         mPubNub.unsubscribeAll();
         isFirstMessage = true;
     }
 
-    // =========================================================================
-    // Map Editing Methods
-    // =========================================================================
-
-    private void initializePolyline() {
-        mGoogleMap.clear();
-        mPolylineOptions = new PolylineOptions();
-        mPolylineOptions.color(Color.BLUE).width(10);
-        mGoogleMap.addPolyline(mPolylineOptions);
-
-        mMarkerOptions = new MarkerOptions();
-    }
-
-    private void updatePolyline() {
-        if(mLatLng !=null && mGoogleMap !=null) {
-            mPolylineOptions.add(mLatLng);
-            mGoogleMap.clear();
-            mGoogleMap.addPolyline(mPolylineOptions);
-        }
-    }
-
-    private void updateCamera() {
-        if(mLatLng !=null && isAutoZoom == true) {
-            mGoogleMap
-                    .animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
-        }
-    }
-
-    private void updateMarker() {
-//		if (!isFirstMessage) {
-//			isFirstMessage = false;
-//			mMarker.remove();
-//		}
-        if(mLatLng !=null && mGoogleMap !=null) {
-            mMarker = mGoogleMap.addMarker(mMarkerOptions.position(mLatLng));
-        }
+    @Override
+    protected void onDestroy() {
+        stopFollowingLocation();
+        super.onDestroy();
     }
 }

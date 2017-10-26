@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rlMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        >
+
+
+        <RelativeLayout
+            android:id="@+id/rlUserData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/rw_mar_8dp"
+            >
+
+
+
+            <TextView
+                android:id="@+id/tvComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:singleLine="false"
+                android:text="this is test"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12s" />
+
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvComment"
+
+                android:gravity="center_vertical|left"
+                android:singleLine="true"
+                android:text="android"
+                android:textAllCaps="true"
+                android:textColor="@color/clrtext_press"
+                android:textSize="@dimen/text_10s"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rlUserDataOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlUserData"
+            android:padding="@dimen/rw_mar_8dp"
+            android:background="#10111111"
+            >
+
+
+
+            <TextView
+                android:id="@+id/tvCommentOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+
+                android:singleLine="false"
+                android:text="this is test"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12s" />
+
+
+            <TextView
+                android:id="@+id/tvNameOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_below="@+id/tvCommentOther"
+
+
+                android:singleLine="true"
+                android:text="android"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_10s"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

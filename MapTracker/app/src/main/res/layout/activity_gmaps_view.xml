@@ -10,6 +10,25 @@
         android:layout_height="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"/>
 
+    <ImageView
+        android:id="@+id/ivChat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/round_black_shape"
+        android:src="@drawable/ic_chat_black_36dp"
+
+        android:padding="8dp"
+
+
+        android:elevation="8dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="14dp"
+
+
+        />
+
     <Switch
         android:id="@+id/swAutoZoom"
         android:layout_width="wrap_content"
@@ -24,5 +43,7 @@
         android:padding="8dp"
         android:textSize="15dp"
         />
+
+
 
 </RelativeLayout>

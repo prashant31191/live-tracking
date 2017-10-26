@@ -29,7 +29,7 @@ public class PubNubManager {
     private static LatLng mLatLng;
     public static final String GOOGLE_MAP_KEY = "AIzaSyDbma9fzwvndbIxfWfxJYTO-5hvyuAblMk";     // Replace with your GOOGLE MAP key
     public static  String UUID_NAME = "jonny_android";     // Replace with your publish key
-    public static  String UUID_MessageText = "\"==This is the messages=\"";     // Replace with your publish key
+    public static  String UUID_MessageText = "=Message=";     // Replace with your publish key
 
 
 
@@ -68,8 +68,7 @@ public class PubNubManager {
         return new PubNub(config);
     }
 
-    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,
-                                         double longitude, double altitude) {
+    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,double longitude, double altitude) {
 
         JSONObject json_message = new JSONObject();
         try {
@@ -108,7 +107,7 @@ public class PubNubManager {
         message.put("id", "1");
         message.put("usertype", "1");
         message.put("data", "add any data");
-        message.put("message", "hello how are you ?");
+        message.put("message", UUID_MessageText);
         message.put("lat", ""+latitude);
         message.put("lng", ""+longitude);
         message.put("alt", ""+altitude);
@@ -128,6 +127,80 @@ public class PubNubManager {
                               //111  Log.v(TAG, "publish(" + JsonUtil.asJson(result) + ")");
                             } else {
                               //111  Log.v(TAG, "publishErr(" + JsonUtil.asJson(status) + ")");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+        );
+
+    }
+
+
+    public static void broadcastLocation(PubNub pubnub, String channelName,String strMessage) {
+
+        JSONObject json_message = new JSONObject();
+        double latitude=0,longitude=0,altitude=0;
+
+        try {
+
+
+            json_message.put("sender", UUID_NAME);
+            json_message.put("message", UUID_MessageText);
+            json_message.put("timestamp", DateTimeUtil.getTimeStampUtc());
+
+
+            json_message.put("lat", latitude);
+            json_message.put("lng", longitude);
+            json_message.put("alt", altitude);
+
+
+
+
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.toString());
+        }
+        /*slatitude = ""+latitude;
+        slongitude = ""+longitude;
+        saltitude = ""+altitude;*/
+
+        /*final Map<String, String> message = ImmutableMap.<String, String>of(
+
+                "sender", "app",
+                "lat", "23.0018051",
+                "lng", "72.5017013"
+              *//*  "message", mMessage.getText().toString(),
+                "timestamp", DateTimeUtil.getTimeStampUtc()*//*
+        );*/
+
+        Map<String, String> message = new HashMap<String, String>();
+        message.put("name", UUID_NAME);
+        message.put("id", "1");
+        message.put("usertype", "1");
+        message.put("data", "add any data");
+        message.put("message", strMessage);
+        message.put("lat", ""+latitude);
+        message.put("lng", ""+longitude);
+        message.put("alt", ""+altitude);
+        message.put("timestamp", ""+DateTimeUtil.getTimeStampUtc());
+
+
+        Log.d(TAG, "Sending JSON ####broadcastLocation#### Message: " + json_message.toString());
+        //pubnub.publish(channelName, UUID_MessageText, publishCallback);
+        pubnub.addListener(publishCallback);
+        // pubnub.publish().channel(CHANNEL_NAME).message(message).async(
+        pubnub.publish().channel(channelName).message(message).async(
+                new PNCallback<PNPublishResult>() {
+                    @Override
+                    public void onResponse(PNPublishResult result, PNStatus status) {
+                        try {
+                            if (!status.isError()) {
+                                //111  Log.v(TAG, "publish(" + JsonUtil.asJson(result) + ")");
+                            } else {
+                                //111  Log.v(TAG, "publishErr(" + JsonUtil.asJson(status) + ")");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

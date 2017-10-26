@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.atlanticlab.pubnubmaptracker.R;
+import com.maptracker.R;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 

@@ -1,4 +1,4 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.maptracker;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,22 +17,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.pubnub.api.PNConfiguration;
+import com.maptracker.PubNubManager;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
 import com.pubnub.api.callbacks.SubscribeCallback;
-import com.pubnub.api.enums.PNStatusCategory;
-import com.pubnub.api.models.consumer.PNPublishResult;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.access_manager.PNAccessManagerGrantResult;
-import com.pubnub.api.models.consumer.history.PNHistoryResult;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import com.maptracker.R;
+
+import static com.maptracker.PubNubManager.*;
 
 public class GMapsFollowLocationActivity extends ActionBarActivity implements
         OnMapReadyCallback {

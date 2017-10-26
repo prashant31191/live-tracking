@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TrackerFullMaptoolkit</string>
+    <string name="app_name">Track-Share Location</string>
     <string name="channel_name">Set Mobile No : </string>
     <string name="name_name">Set Your Name : </string>
     <string name="share_button">Share Location</string>

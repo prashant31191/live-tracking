@@ -1,4 +1,4 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.maptracker;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,12 +21,15 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.maptracker.PubNubManager;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.access_manager.PNAccessManagerGrantResult;
 
 import java.util.Arrays;
+
+import com.maptracker.R;
 
 public class GMapsShareLocationActivity extends ActionBarActivity implements
         OnMapReadyCallback, ConnectionCallbacks, LocationListener {
@@ -78,7 +81,7 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
         actionBar.setDisplayShowTitleEnabled(false);
 
         // Start PubNub
-        mPubNub = PubNubManager.startPubnub();
+        mPubNub = com.maptracker.PubNubManager.startPubnub();
 
         mPubNub.grant()
                 .channels(Arrays.asList(channelName, "channel-east"))

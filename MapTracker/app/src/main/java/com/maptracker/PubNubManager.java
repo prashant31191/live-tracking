@@ -1,11 +1,10 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.maptracker;
 
 /**
  * Created by norvan on 1/22/15.
  */
 
 import android.util.Log;
-
 
 import com.google.android.gms.maps.model.LatLng;
 import com.pubnub.api.PNConfiguration;
@@ -16,7 +15,7 @@ import com.pubnub.api.models.consumer.PNPublishResult;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
-import com.google.common.collect.ImmutableMap;
+import com.utils.DateTimeUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -176,4 +175,5 @@ public class PubNubManager {
         }
 
     };
+
 }

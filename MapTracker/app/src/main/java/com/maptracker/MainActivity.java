@@ -1,4 +1,4 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.maptracker;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,19 +6,15 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnKeyListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.mapanim.MapsActivity;
 
 import google.ads.AdsDisplayUtil;
+import com.maptracker.R;
 
 public class MainActivity extends ActionBarActivity {
 

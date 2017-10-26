@@ -1,4 +1,4 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.maptracker;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

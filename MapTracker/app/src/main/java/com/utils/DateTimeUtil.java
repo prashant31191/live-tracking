@@ -1,4 +1,4 @@
-package io.atlanticlab.pubnubmaptracker;
+package com.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

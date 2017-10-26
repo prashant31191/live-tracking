@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import com.maptracker.R;
+import com.utils.PreferencesKeys;
 
 import static com.maptracker.PubNubManager.*;
 
@@ -44,6 +47,7 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
     private static final String TAG = "Tracker - GMaps Follow";
 
     private boolean isFirstMessage = true;
+    private boolean isAutoZoom = true;
     private boolean mRequestingLocationUpdates = false;
     private MenuItem mFollowButton;
 
@@ -59,6 +63,8 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
     private PubNub mPubNub;
     private String channelName  = "channel-west";
 
+    Switch swAutoZoom;
+
     // =========================================================================
     // Activity Life Cycle
     // =========================================================================
@@ -72,6 +78,22 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
         Intent intent = getIntent();
         channelName = intent.getExtras().getString("channel");
         Log.d(TAG, "Passed Channel Name: " + channelName);
+
+        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) !=null && App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo).length() >1)
+        {
+            channelName = App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo);
+            Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
+        }
+
+        swAutoZoom = (Switch) findViewById(R.id.swAutoZoom);
+        swAutoZoom.setChecked(isAutoZoom);
+
+        swAutoZoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isAutoZoom =  isChecked;
+            }
+        });
 
         // Set up View: Map & Action Bar
         MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -218,15 +240,16 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
 
                     // {"message":"hello how are you ?","id":"1","alt":"0.0","name":"Josh","data":"add any data","lng":"72.501697","usertype":"1","lat":"23.0019311"}
 
-                    double mLat = mainObject.getDouble("lat");
-                    double mLng = mainObject.getDouble("lng");
+                    if(mainObject.has("lat")) {
+                        double mLat = mainObject.getDouble("lat");
+                        double mLng = mainObject.getDouble("lng");
 
 
-                    Log.e("====", "====mLat======" + mLat);
-                    Log.e("====", "====mLng======" + mLng);
+                        Log.e("====", "====mLat======" + mLat);
+                        Log.e("====", "====mLng======" + mLng);
 
-                    mLatLng = new LatLng(mLat, mLng);
-
+                        mLatLng = new LatLng(mLat, mLng);
+                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -274,14 +297,18 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
     }
 
     private void updatePolyline() {
-        mPolylineOptions.add(mLatLng);
-        mGoogleMap.clear();
-        mGoogleMap.addPolyline(mPolylineOptions);
+        if(mLatLng !=null && mGoogleMap !=null) {
+            mPolylineOptions.add(mLatLng);
+            mGoogleMap.clear();
+            mGoogleMap.addPolyline(mPolylineOptions);
+        }
     }
 
     private void updateCamera() {
-        mGoogleMap
-                .animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
+        if(mLatLng !=null && isAutoZoom == true) {
+            mGoogleMap
+                    .animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
+        }
     }
 
     private void updateMarker() {
@@ -289,6 +316,8 @@ public class GMapsFollowLocationActivity extends ActionBarActivity implements
 //			isFirstMessage = false;
 //			mMarker.remove();
 //		}
-        mMarker = mGoogleMap.addMarker(mMarkerOptions.position(mLatLng));
+        if(mLatLng !=null && mGoogleMap !=null) {
+            mMarker = mGoogleMap.addMarker(mMarkerOptions.position(mLatLng));
+        }
     }
 }

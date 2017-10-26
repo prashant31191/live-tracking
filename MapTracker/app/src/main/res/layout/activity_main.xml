@@ -4,92 +4,126 @@
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="30dp" >
+    android:padding="16dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView1"
+        <LinearLayout
+            android:id="@+id/llData"
+
+            android:layout_above="@+id/btnViewLocation"
+            android:layout_marginBottom="20dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="end"
+                android:text="@string/channel_name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/tv_text_pink" />
+
+            <EditText
+                android:id="@+id/etMobileNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/channel_hint"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:textColor="@color/btn_txt_black_color"
+                android:textColorHint="@color/hint">
+
+                <requestFocus />
+            </EditText>
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+
+                android:gravity="end"
+                android:text="@string/name_name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/tv_text_pink" />
+
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_hint"
+                android:inputType="text"
+                android:maxLength="16"
+                android:textColor="@color/btn_txt_black_color"
+                android:textColorHint="@color/hint"></EditText>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnShareLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
 
-            android:gravity="end"
-            android:text="@string/channel_name"
+
+            android:gravity="center"
+            android:onClick="shareLocation"
+            android:padding="15dp"
+            android:textSize="14dp"
+            android:text="@string/share_button"
+            android:textAllCaps="false"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black" />
+            android:textColor="@color/btn_txt_white_color" />
 
-        <EditText
-            android:id="@+id/channelEditText"
+        <Button
+            android:id="@+id/btnViewLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="11"
-            android:hint="@string/channel_hint"
-            android:textColor="@color/red"
-            android:textColorHint="@color/hint"
-            android:inputType="phone" >
-
-            <requestFocus />
-        </EditText>
+            android:layout_gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
 
-            android:gravity="end"
-            android:text="@string/name_name"
+            android:gravity="center"
+            android:onClick="followLocation"
+            android:padding="15dp"
+            android:textSize="14dp"
+            android:text="@string/follow_button"
+            android:textAllCaps="false"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black" />
+            android:textColor="@color/btn_txt_white_color"
 
-        <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLength="16"
-            android:hint="@string/name_hint"
-            android:textColor="@color/red"
-            android:textColorHint="@color/hint"
-            android:inputType="text" >
-        </EditText>
-
-    </LinearLayout>
-
-    <Button
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-
-        android:gravity="center"
-        android:onClick="shareLocation"
-        android:padding="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/share_button"
-        android:textAllCaps="false"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/light_blue" />
-
-    <Button
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-
-        android:gravity="center"
-        android:onClick="followLocation"
-        android:padding="20dp"
-        android:layout_marginTop="1dp"
-        android:text="@string/follow_button"
-        android:textAllCaps="false"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/light_blue" />
+            android:theme="@style/styleBtnBlack"
+            />
+    </RelativeLayout>
 
 
 </LinearLayout>

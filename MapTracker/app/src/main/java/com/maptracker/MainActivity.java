@@ -15,11 +15,12 @@ import com.mapanim.MapsActivity;
 
 import google.ads.AdsDisplayUtil;
 import com.maptracker.R;
+import com.utils.PreferencesKeys;
 
 public class MainActivity extends ActionBarActivity {
 
 
-    private EditText channelEditText,nameEditText;
+    private EditText etMobileNo,etName;
 
     private String channelName="",userName="Android-1";
     private static final String TAG = "Tracker - MainActivity";
@@ -38,15 +39,25 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        channelEditText = (EditText) findViewById(R.id.channelEditText);
-        nameEditText = (EditText) findViewById(R.id.nameEditText);
-      /*  channelEditText.setOnKeyListener(new OnKeyListener() {
+        etName = (EditText) findViewById(R.id.etName);
+        etMobileNo = (EditText) findViewById(R.id.etMobileNo);
+
+        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName) !=null)
+        {
+            etName.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName));
+        }
+        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) !=null)
+        {
+            etMobileNo.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo));
+        }
+
+      /*  etMobileNo.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN)) {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_ENTER:
-                            channelName = channelEditText.getText().toString().trim();
+                            channelName = etMobileNo.getText().toString().trim();
                             String message = "Chosen channel: " + channelName;
                             Toast.makeText(MainActivity.this, message,
                                     Toast.LENGTH_SHORT).show();
@@ -88,15 +99,17 @@ public class MainActivity extends ActionBarActivity {
 
     private void callActivity(Class<?> cls) {
 
-        channelName = channelEditText.getText().toString().trim();
-        userName = nameEditText.getText().toString().trim();
+        channelName = etMobileNo.getText().toString().trim();
+        userName = etName.getText().toString().trim();
         String message = "Mobile number : " + channelName;
 
 
         if(channelName !=null && channelName.length() > 0) {
 
-            Toast.makeText(MainActivity.this, message,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, message,Toast.LENGTH_SHORT).show();
+
+            App.sharePrefrences.setPref(PreferencesKeys.strUserName,userName);
+            App.sharePrefrences.setPref(PreferencesKeys.strUserMobileNo,channelName);
 
 
             Intent intent = new Intent(this, cls);
@@ -109,12 +122,13 @@ public class MainActivity extends ActionBarActivity {
         {
             message = "Please enter mobile number";
 
-            Toast.makeText(MainActivity.this, message,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
+/*
             Intent intent = new Intent(this, MapsActivity.class);
             intent.putExtra("channel", channelName);
             startActivity(intent);
+*/
 
 
         }

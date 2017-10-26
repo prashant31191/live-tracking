@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -53,6 +55,9 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
     // PubNub
     private PubNub mPubNub;
     private String channelName  = "channel-west";
+
+    Switch swAutoZoom;
+    boolean isAutoZoom = true;
 
     // =============================================================================================
     // Activity Life Cycle
@@ -100,6 +105,16 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
                         }
                     }
                 });
+
+        swAutoZoom = (Switch) findViewById(R.id.swAutoZoom);
+        swAutoZoom.setChecked(isAutoZoom);
+
+        swAutoZoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isAutoZoom =  isChecked;
+            }
+        });
     }
 
     @Override
@@ -228,6 +243,8 @@ public class GMapsShareLocationActivity extends ActionBarActivity implements
     }
 
     private void updateCamera() {
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
+        if(isAutoZoom == true && mGoogleMap !=null) {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 16));
+        }
     }
 }

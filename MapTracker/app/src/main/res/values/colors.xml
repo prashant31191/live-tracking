@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#E91E63</color>
+    <color name="colorPrimaryDark">#C2185B </color>
+    <color name="colorAccent">#E91E63</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="hint">#aaaaaa</color>
     <color name="light_blue">#007AFF</color>
     <color name="red">#FF0000</color>
+
+    <color name="clrBtnBlackPress">#80000000</color>
+    <color name="clrBtnBlackUnpress">#000000</color>
+
+    <color name="clrBtnWhiteUnpress">#ffffff</color>
+    <color name="clrBtnWhitePress">#80ffffff</color>
+
+    <color name="clr_swich_press">#E91E63</color>
+    <color name="clr_swich_unpress">#80E91E63</color>
+
+    <color name="clrtext_press">#80000000</color>
+    <color name="clrtext_unpress">#111111</color>
+
+
+    <color name="clrtext_pink_press">#E91E63</color>
+    <color name="clrtext_pink_unpress">#80E91E63</color>
+
 
 </resources>

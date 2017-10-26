@@ -16,6 +16,7 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 import com.utils.DateTimeUtil;
+import com.utils.PreferencesKeys;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,12 +30,6 @@ public class PubNubManager {
     public static final String GOOGLE_MAP_KEY = "AIzaSyDbma9fzwvndbIxfWfxJYTO-5hvyuAblMk";     // Replace with your GOOGLE MAP key
     public static  String UUID_NAME = "jonny_android";     // Replace with your publish key
     public static  String UUID_MessageText = "\"==This is the messages=\"";     // Replace with your publish key
-
-/*
-    public static final String PUBNUB_PUBLISH_KEY = "pub-c-9c3ed212-a25d-4715-8643-14d2761757d6";     // Replace with your publish key
-    public static final String PUBNUB_SUBSCRIBE_KEY = "sub-c-b1cc8a3c-f906-11e6-b0ac-0619f8945a4f";   // Replace with your subscribe key
-    public static final String PUBNUB_SECRET_KEY = "sec-c-ZTEwYmIzMDItYThlNS00YzRlLTg2ZjQtMzk5MzNhMzQ4Yzk3";   // Replace with your sceret key
-   */
 
 
 
@@ -51,6 +46,12 @@ public class PubNubManager {
 
     public static PubNub startPubnub() {
         Log.d(TAG, "Initializing PubNub");
+
+        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName) !=null && App.sharePrefrences.getStringPref(PreferencesKeys.strUserName).length() > 1)
+        {
+            UUID_NAME = App.sharePrefrences.getStringPref(PreferencesKeys.strUserName);
+        }
+
         PNConfiguration config = new PNConfiguration();
 
         config.setPublishKey(PubNubManager.PUBNUB_PUBLISH_KEY);
@@ -62,7 +63,7 @@ public class PubNubManager {
 
         config.setSecure(true);
 
-        Log.e("==UUID=","==app=====>>");
+        Log.e("==UUID_NAME=","==app=====>>"+UUID_NAME);
 
         return new PubNub(config);
     }
@@ -103,7 +104,7 @@ public class PubNubManager {
         );*/
 
         Map<String, String> message = new HashMap<String, String>();
-        message.put("name", "Josh");
+        message.put("name", UUID_NAME);
         message.put("id", "1");
         message.put("usertype", "1");
         message.put("data", "add any data");

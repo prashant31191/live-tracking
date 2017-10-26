@@ -4,7 +4,7 @@
     <string name="app_name">Track-Share Location</string>
     <string name="channel_name">Set Mobile No : </string>
     <string name="name_name">Set Your Name : </string>
-    <string name="share_button">Share Location</string>
+    <string name="share_button">Share Your Location</string>
     <string name="follow_button">View Friend\'s Location</string>
     <string name="gmaps">Google Maps</string>
     <string name="mapbox">MapBox</string>

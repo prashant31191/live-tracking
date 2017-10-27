@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.utils.PreferencesKeys;
 import com.utils.SharePrefrences;
 
+import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,6 +118,9 @@ public class App extends Application {
             MultiDex.install(this);
             mContext = getApplicationContext();
             sharePrefrences = new SharePrefrences(App.this);
+
+            Realm.init(this);
+
             getFont_Regular();
             getFont_Bold();
             createAppFolder();
@@ -158,13 +162,13 @@ public class App extends Application {
 
 
     public static Typeface getFont_Regular() {
-        tf_Regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Regular.ttf");
+        tf_Regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/regular_light.ttf");
         return tf_Regular;
     }
 
 
     public static Typeface getFont_Bold() {
-        tf_Bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Bold.ttf");
+        tf_Bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_regular.ttf");
         return tf_Bold;
     }
 

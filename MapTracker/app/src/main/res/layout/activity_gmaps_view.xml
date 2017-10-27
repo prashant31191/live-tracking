@@ -17,7 +17,7 @@
         android:background="@drawable/round_black_shape"
         android:src="@drawable/ic_chat_black_36dp"
 
-        android:padding="8dp"
+        android:padding="10dp"
 
 
         android:elevation="8dp"

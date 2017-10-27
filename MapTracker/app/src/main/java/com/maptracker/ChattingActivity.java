@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -45,6 +46,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 public class ChattingActivity extends ActionBarActivity {
 
@@ -71,7 +79,7 @@ public class ChattingActivity extends ActionBarActivity {
     ImageView ivSend;
     EditText etMsg;
 
-    NestedScrollView nsvComment;
+    //NestedScrollView nsvComment;
     RecyclerView recyclerView;
 
 
@@ -81,54 +89,90 @@ public class ChattingActivity extends ActionBarActivity {
     String  strMessage = "";
     String  strName = "";
 
+    Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatting);
+        try {
+            App.showLog("=======onCreate===");
+            setContentView(R.layout.activity_chatting);
 
-        // Get Channel Name
-        Intent intent = getIntent();
+
+
+
+
+            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+            // Clear the realm from last time
+            //Realm.deleteRealm(realmConfiguration);
+            realm = Realm.getInstance(realmConfiguration);
+
+
+
+            // Get Channel Name
+            Intent intent = getIntent();
         /*channelName = intent.getExtras().getString("channel");
         Log.d(TAG, "Passed Channel Name: " + channelName);*/
 
-        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) !=null && App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo).length() >1)
-        {
-            channelName = App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo);
+            if (App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) != null && App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo).length() > 1) {
+                channelName = App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo);
 
 
-            Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
+                Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
 
-            channelName = channelName + "_chat";
-            Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
-        }
-
-        ivSend = (ImageView) findViewById(R.id.ivSend);
-        etMsg = (EditText) findViewById(R.id.etMsg);
-        nsvComment = (NestedScrollView) findViewById(R.id.nsvComment);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        setCommentData();
-
-        ivSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Broadcast information on PubNub Channel
-                strMessage = etMsg.getText().toString().trim();
-
-                if(mPubNub !=null && strMessage.length() > 0) {
-                    PubNubManager.broadcastLocation(mPubNub, channelName, strMessage);
-                    etMsg.setText("");
-                }
+                channelName = channelName + "_chat";
+                Log.d(TAG, "Passed Channel Name--sharePrefrences--: " + channelName);
             }
-        });
+
+            ivSend = (ImageView) findViewById(R.id.ivSend);
+            etMsg = (EditText) findViewById(R.id.etMsg);
+            //nsvComment = (NestedScrollView) findViewById(R.id.nsvComment);
+            recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+            setCommentData();
+
+            ivSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Broadcast information on PubNub Channel
+                    strMessage = etMsg.getText().toString().trim();
+
+                    if (mPubNub != null && strMessage.length() > 0) {
+                        PubNubManager.broadcastLocation(mPubNub, channelName, strMessage);
+                        etMsg.setText("");
+                    }
+                }
+            });
 
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(false);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // auto start view
+                    Log.d(TAG, "'Follow Friend's Location' Button Pressed");
+                    mRequestingLocationUpdates = !mRequestingLocationUpdates;
+                    if (mRequestingLocationUpdates) {
+                        startFollowingLocation();
+                        mFollowButton.setTitle("Stop Viewing Your Friend's Location");
+                    }
+                }
+            },1000);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        App.showLog("=======onCreateOptionsMenu===");
         getMenuInflater().inflate(R.menu.follow, menu);
         mFollowButton = menu.findItem(R.id.follow_locations);
         return true;
@@ -142,6 +186,7 @@ public class ChattingActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        App.showLog("=======onOptionsItemSelected===");
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.follow_locations:
@@ -163,6 +208,7 @@ public class ChattingActivity extends ActionBarActivity {
 
 
     private void startFollowingLocation() {
+        App.showLog("=======startFollowingLocation===");
         // Start PubNub
         mPubNub = PubNubManager.startPubnub();
         mPubNub.grant()
@@ -269,7 +315,9 @@ public class ChattingActivity extends ActionBarActivity {
                             
                             if(strMessage.length() >1 && strName.length() >1)
                             {
-                                arrayListAllCommentListModel.add(new CommentListModel(strMessage,strName));
+                                CommentListModel commentListModel = new CommentListModel(strMessage,strName,channelName);
+                                setupDataInsert(commentListModel);
+                                arrayListAllCommentListModel.add(commentListModel);
 
                                 if(notificationAdapter !=null) {
                                     notificationAdapter.notifyDataSetChanged();
@@ -300,8 +348,9 @@ public class ChattingActivity extends ActionBarActivity {
 
     private void setCommentData()
     {
-        
-        
+        App.showLog("=======setCommentData===");
+
+        arrayListAllCommentListModel =   getAllRecords();
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChattingActivity.this);
@@ -314,8 +363,72 @@ public class ChattingActivity extends ActionBarActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
-        nsvComment.getParent().requestChildFocus(nsvComment, nsvComment);
+        //nsvComment.getParent().requestChildFocus(nsvComment, nsvComment);
 
+    }
+
+
+    private void setupDataInsert(CommentListModel commentListModel) {
+        try {
+
+            ArrayList<CommentListModel> arrayListDLocationModel = new ArrayList<>();
+            arrayListDLocationModel.add(commentListModel);
+
+            if(arrayListDLocationModel !=null && arrayListDLocationModel.size() > 0){
+
+
+                realm.beginTransaction();
+                Collection<CommentListModel> realmDLocationModel = realm.copyToRealm(arrayListDLocationModel);
+                realm.commitTransaction();
+
+
+                ArrayList<CommentListModel> arrTemp = new ArrayList<CommentListModel>(realmDLocationModel);
+                for(int i=0; i < arrTemp.size(); i++){
+                    App.showLog(i+"===data -- =="+arrTemp.get(i).strMessage);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private ArrayList<CommentListModel> getAllRecords(){
+        try{
+
+            RealmResults<CommentListModel> arrCommentListModel = realm.where(CommentListModel.class).findAll();
+
+            App.showLog("===arrCommentListModel=="+arrCommentListModel);
+
+            List<CommentListModel> arraCommentListModel = arrCommentListModel;
+
+            for(int k=0;k<arraCommentListModel.size();k++)
+            {
+                App.showLog(k+"===arraCommentListModel===strMessage=="+arraCommentListModel.get(k).strMessage);
+            }
+
+
+            return  new ArrayList<CommentListModel>(arraCommentListModel);
+
+/*
+            RealmQuery<CommentListModel> query = realm.where(CommentListModel.class);
+            *//*
+            for (String id : ids) {
+                query.or().equalTo("myField", id);
+            }*//*
+
+            RealmResults<CommentListModel> results = query.findAll();
+            App.showLog("===results=="+results);
+
+            */
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.VersionViewHolder> {
@@ -341,21 +454,25 @@ public class ChattingActivity extends ActionBarActivity {
             try {
                 CommentListModel commentListModel = mArrListCommentListModel.get(i);
 
-                versionViewHolder.tvName.setText(commentListModel.strName);
-                versionViewHolder.tvComment.setText(commentListModel.strMessage);
 
-                versionViewHolder.tvNameOther.setText(commentListModel.strName);
-                versionViewHolder.tvCommentOther.setText(commentListModel.strMessage);
 
-                if(strName.equalsIgnoreCase(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName)))
+
+
+                if(commentListModel.strName.equalsIgnoreCase(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName)))
                 {
                     versionViewHolder.rlUserData.setVisibility(View.VISIBLE);
+                    versionViewHolder.tvName.setText(commentListModel.strName);
+                    versionViewHolder.tvComment.setText(commentListModel.strMessage);
+
                     versionViewHolder.rlUserDataOther.setVisibility(View.GONE);
                 }
                 else
                 {
                     versionViewHolder.rlUserData.setVisibility(View.GONE);
+
                     versionViewHolder.rlUserDataOther.setVisibility(View.VISIBLE);
+                    versionViewHolder.tvNameOther.setText(commentListModel.strName);
+                    versionViewHolder.tvCommentOther.setText(commentListModel.strMessage);
                 }
 
             } catch (Exception e) {

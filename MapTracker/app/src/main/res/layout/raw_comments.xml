@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+
     android:orientation="vertical">
 
 
@@ -10,18 +10,34 @@
         android:id="@+id/rlMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/m_3dp"
         android:gravity="center_vertical"
         >
 
 
+        
         <RelativeLayout
             android:id="@+id/rlUserData"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/rw_mar_8dp"
+           
             >
 
-
+            <ImageView
+                android:id="@+id/myMessage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/shape_bg_incoming_bubble"
+                />
+            
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_corner_white_shape"
+    android:padding="@dimen/rw_mar_8dp"
+    android:layout_toRightOf="@+id/myMessage"
+    android:layout_marginLeft="-8dp"
+    >
 
             <TextView
                 android:id="@+id/tvComment"
@@ -47,24 +63,41 @@
                 android:textColor="@color/clrtext_press"
                 android:textSize="@dimen/text_10s"
                 android:visibility="visible" />
-
+</RelativeLayout>
         </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/rlUserDataOther"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlUserData"
-            android:padding="@dimen/rw_mar_8dp"
-            android:background="#10111111"
+            android:layout_alignParentRight="true"
+
+
             >
+            <ImageView
+                android:id="@+id/otherMessage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+
+                android:src="@drawable/shape_bg_outgoing_bubble"
+                />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toLeftOf="@+id/otherMessage"
+    android:background="@drawable/round_corner_gray_shape"
+    android:padding="@dimen/rw_mar_8dp"
+    android:layout_marginRight="-8dp"
+    >
 
 
 
             <TextView
                 android:id="@+id/tvCommentOther"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
 
@@ -76,7 +109,7 @@
 
             <TextView
                 android:id="@+id/tvNameOther"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:layout_below="@+id/tvCommentOther"
@@ -85,10 +118,10 @@
                 android:singleLine="true"
                 android:text="android"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/clrtext_pink_unpress"
                 android:textSize="@dimen/text_10s"
                 android:visibility="visible" />
-
+</RelativeLayout>
         </RelativeLayout>
 
     </RelativeLayout>

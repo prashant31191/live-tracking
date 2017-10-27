@@ -4,8 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="rw_mar_8dp">8dp</dimen>
+    <dimen name="m_3dp">3dp</dimen>
     <dimen name="m_8dp">8dp</dimen>
-    <dimen name="text_12s">15dp</dimen>
-    <dimen name="text_10s">12dp</dimen>
+    <dimen name="text_12s">16dp</dimen>
+    <dimen name="text_10s">8dp</dimen>
 
 </resources>

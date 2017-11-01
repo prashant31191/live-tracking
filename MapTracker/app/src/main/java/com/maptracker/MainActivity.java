@@ -11,9 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.mapanim.MapsActivity;
 
 import google.ads.AdsDisplayUtil;
+import io.fabric.sdk.android.Fabric;
+
 import com.maptracker.R;
 import com.utils.PreferencesKeys;
 
@@ -38,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Fabric.with(this, new Crashlytics());
 
         etName = (EditText) findViewById(R.id.etName);
         etMobileNo = (EditText) findViewById(R.id.etMobileNo);
@@ -111,6 +115,7 @@ public class MainActivity extends ActionBarActivity {
             App.sharePrefrences.setPref(PreferencesKeys.strUserName,userName);
             App.sharePrefrences.setPref(PreferencesKeys.strUserMobileNo,channelName);
 
+            logUser();
 
             Intent intent = new Intent(this, cls);
             intent.putExtra("channel", channelName);
@@ -121,6 +126,7 @@ public class MainActivity extends ActionBarActivity {
         else
         {
             message = "Please enter mobile number";
+            //forceCrash();
 
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
@@ -133,6 +139,18 @@ public class MainActivity extends ActionBarActivity {
 
         }
     }
+    public void forceCrash() {
+        throw new RuntimeException("This is a crash");
+    }
+
+    private void logUser() {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(channelName);
+        Crashlytics.setUserEmail(channelName);
+        Crashlytics.setUserName(userName);
+    }
+
 
 }
 

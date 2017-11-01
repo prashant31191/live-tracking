@@ -31,11 +31,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.utils.PreferencesKeys;
 import com.utils.SharePrefrences;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -126,6 +128,8 @@ public class App extends Application {
             createAppFolder();
 
             //startService(new Intent(this, LoginSessionService.class));
+            Fabric.with(this, new Crashlytics());
+
 
 
         } catch (Exception e) {
@@ -162,13 +166,13 @@ public class App extends Application {
 
 
     public static Typeface getFont_Regular() {
-        tf_Regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/regular_light.ttf");
+        tf_Regular = Typeface.createFromAsset(mContext.getAssets(), "font/roboto_light.ttf");
         return tf_Regular;
     }
 
 
     public static Typeface getFont_Bold() {
-        tf_Bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_regular.ttf");
+        tf_Bold = Typeface.createFromAsset(mContext.getAssets(), "font/roboto_regular.ttf");
         return tf_Bold;
     }
 

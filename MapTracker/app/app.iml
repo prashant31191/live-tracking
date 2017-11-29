@@ -128,12 +128,15 @@
     <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-common-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:E.\Prashant\Github_Demo\live-tracking\MapTracker\app\libs\bcprov-jdk15on-1.47.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:transition-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-wearable-9.4.0" level="project" />
+    <orderEntry type="library" exported="" name="com.android.support:design-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.firebase:firebase-common-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-tasks-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-module-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-analytics-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.firebase:firebase-config-9.4.0" level="project" />
+    <orderEntry type="library" exported="" name="com.squareup.picasso:picasso:2.5.2@jar" level="project" />
     <orderEntry type="library" exported="" name="com.crashlytics.sdk.android:crashlytics-2.7.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-clearcut-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-games-9.4.0" level="project" />
@@ -177,6 +180,7 @@
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-maps-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-plus-9.4.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-gcm-9.4.0" level="project" />
+    <orderEntry type="library" exported="" name="com.oguzbabaoglu:fancymarkers-0.2" level="project" />
     <orderEntry type="library" exported="" name="com.android.support:support-annotations:25.3.1@jar" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms:play-services-ads-lite-9.4.0" level="project" />
     <orderEntry type="module" module-name="googleadssdk" exported="" />

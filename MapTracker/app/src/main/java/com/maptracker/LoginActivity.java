@@ -3,6 +3,7 @@ package com.maptracker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -12,21 +13,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.mapanim.MapsActivity;
 
 import google.ads.AdsDisplayUtil;
 import io.fabric.sdk.android.Fabric;
 
-import com.maptracker.R;
+import com.markerdemo.MapMarkerActivity;
 import com.utils.PreferencesKeys;
 
-public class MainActivity extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
 
 
     private EditText etMobileNo,etName;
+    private FloatingActionButton fabMap;
 
     private String channelName="",userName="Android-1";
-    private static final String TAG = "Tracker - MainActivity";
+    private static final String TAG = "Tracker - LoginActivity";
 
     // ==============================================================================
     // Activity Life Cycle
@@ -40,11 +41,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         Fabric.with(this, new Crashlytics());
 
         etName = (EditText) findViewById(R.id.etName);
         etMobileNo = (EditText) findViewById(R.id.etMobileNo);
+        fabMap = (FloatingActionButton) findViewById(R.id.fabMap);
 
         if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName) !=null)
         {
@@ -63,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
                         case KeyEvent.KEYCODE_ENTER:
                             channelName = etMobileNo.getText().toString().trim();
                             String message = "Chosen channel: " + channelName;
-                            Toast.makeText(MainActivity.this, message,
+                            Toast.makeText(LoginActivity.this, message,
                                     Toast.LENGTH_SHORT).show();
                             Log.d(TAG, message);
                             return true;
@@ -90,12 +92,19 @@ public class MainActivity extends ActionBarActivity {
     // ==============================================================================
 
     public void shareLocation(View view) {
+        App.showLog("===shareLocation===");
             Log.d(TAG, "Share Location With Google Maps Chosen on channel: "
                     + channelName);
             callActivity(GMapsShareLocationActivity.class);
     }
-
+    public void openMapMarker(View view) {
+        App.showLog("===openMapMarker===");
+        Intent intent = new Intent(this, MapMarkerActivity.class);
+        intent.putExtra("channel", channelName);
+        startActivity(intent);
+    }
     public void followLocation(View view) {
+        App.showLog("===followLocation===");
         Log.d(TAG, "Follow Location With Google Maps Chosen on channel: "
                     + channelName);
             callActivity(GMapsFollowLocationActivity.class);
@@ -110,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
 
         if(channelName !=null && channelName.length() > 0) {
 
-            Toast.makeText(MainActivity.this, message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, message,Toast.LENGTH_SHORT).show();
 
             App.sharePrefrences.setPref(PreferencesKeys.strUserName,userName);
             App.sharePrefrences.setPref(PreferencesKeys.strUserMobileNo,channelName);
@@ -121,14 +130,14 @@ public class MainActivity extends ActionBarActivity {
             intent.putExtra("channel", channelName);
             startActivity(intent);
 
-            AdsDisplayUtil.openBnrIntAdsScreen(MainActivity.this, "", "");
+            AdsDisplayUtil.openBnrIntAdsScreen(LoginActivity.this, "", "");
         }
         else
         {
             message = "Please enter mobile number";
             //forceCrash();
 
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
 /*
             Intent intent = new Intent(this, MapsActivity.class);

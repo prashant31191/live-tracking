@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/marker_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_pin_gray"
+            android:visibility="gone"
+
+            />
+
+        <ImageView
+            android:id="@+id/marker_background"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_pin_gray" />
+
+        <TextView
+            android:id="@+id/tvMarkerData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 20"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            tools:ignore="MissingConstraints" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

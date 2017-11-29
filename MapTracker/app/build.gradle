@@ -54,9 +54,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
 
     compile 'com.google.android.gms:play-services:9.4.0'
     //compile 'com.google.android.gms:play-services:11.0.1'
+    //compile 'com.google.maps.android:android-maps-utils:0.3+'
+//for mapmmarker
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.oguzbabaoglu:fancymarkers:0.2'
 
     // pubnumlatest sdk
     //compile group: 'com.pubnub', name: 'pubnub', version: '4.0.5'

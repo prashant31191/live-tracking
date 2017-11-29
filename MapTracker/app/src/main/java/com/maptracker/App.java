@@ -13,12 +13,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
 
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 
+import android.support.design.widget.Snackbar;
 import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.text.TextUtils;
@@ -34,14 +36,19 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
+import com.markerdemo.api.ApiService;
+import com.markerdemo.utils.BasicAuthInterceptor;
 import com.utils.PreferencesKeys;
 import com.utils.SharePrefrences;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -55,6 +62,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +73,14 @@ public class App extends Application {
 
     private static final String TWITTER_KEY = "sdasd";
     private static final String TWITTER_SECRET = "asdqaweq2e41234123aedasd";
+
+
+    public static String strApiUrl = "https://www.wikileaf.org/masterapi/";
+    public static String username = "testuser";
+    public static String password = "jzP!/8'x6+,ggxPC";
+
+    //AIzaSyCJl2Hpk1iYW5OS51awouSbIUxU5gcRcFU
+    //AIzaSyB1VPsu5_nBEX1DAIWyey-ZphC7Ee3FGas
 
 
 
@@ -523,7 +539,7 @@ public class App extends Application {
         NotificationManager notifManager= (NotificationManager) act.getSystemService(Context.NOTIFICATION_SERVICE);
         notifManager.cancelAll();
 
-        Intent iv = new Intent(act, MainActivity.class);
+        Intent iv = new Intent(act, LoginActivity.class);
         iv.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //iv.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         iv.putExtra(App.ITAG_FROM, "BaseActivity");
@@ -592,6 +608,126 @@ public class App extends Application {
         // 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
+    }
+
+
+
+    public static JSONArray jsonArrayRoute = new JSONArray();
+
+    public static void setJsonArrayRoute(float meters, double eDLat, double eDLon) {
+        try {
+            //if (meters % 10 == 0) // 10 meter insert data
+            {
+                JSONObject jsonObjectRoute = new JSONObject();
+                jsonObjectRoute.put("latlon", "" + eDLat + "," + eDLon);
+                jsonArrayRoute.put(jsonObjectRoute);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static String getDistanceInKMtoMeter(float KMS) {
+        float distanceInMeters = KMS;
+
+
+        distanceInMeters = ((distanceInMeters) * 1000);
+
+
+        // distance = locationA.distanceTo(locationB);   // in meters
+        //  distance = locationA.distanceTo(locationB)/1000;   // in km
+
+        String strCalKMtoMETER = String.format("%.02f", distanceInMeters);
+
+        App.showLog("======METER====" + strCalKMtoMETER);
+
+        return strCalKMtoMETER;
+    }
+
+
+    public static String convertMeterToKMString(float meters) {
+        float distanceInMeters = 0;
+
+        distanceInMeters = meters / 1000;
+        String strCalKM = "0";
+        strCalKM = String.format("%.02f", distanceInMeters);
+
+        App.showLog("======KM====" + strCalKM);
+
+        return strCalKM;
+    }
+
+
+    public static String getDistanceInMeter(double sDLat, double sDLon, double eDLat, double eDLon) {
+        float distanceInMeters = 0;
+
+        Location startLocation = new Location("Start");
+        startLocation.setLatitude(sDLat);
+        startLocation.setLongitude(sDLon);
+
+        Location targetLocation = new Location("Ending");
+        targetLocation.setLatitude(eDLat);
+        targetLocation.setLongitude(eDLon);
+
+        distanceInMeters = (targetLocation.distanceTo(startLocation));
+
+
+        // distance = locationA.distanceTo(locationB);   // in meters
+        //  distance = locationA.distanceTo(locationB)/1000;   // in km
+
+        String strCalMeter = String.format("%.02f", distanceInMeters);
+
+        App.showLog("======METER====" + strCalMeter);
+
+        return strCalMeter;
+    }
+
+
+    public static void showSnackBar(View view, String strMessage) {
+        Snackbar snackbar = Snackbar.make(view, strMessage, Snackbar.LENGTH_SHORT);
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(Color.BLACK);
+        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+
+    public static void showSnackBarLong(View view, String strMessage) {
+        Snackbar.make(view, strMessage, Snackbar.LENGTH_LONG).show();
+    }
+
+
+    public static OkHttpClient getOkHttpClient()
+    {
+        return  new OkHttpClient.Builder()
+                .addInterceptor(new BasicAuthInterceptor(username, password))
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+    }
+
+    public static Retrofit getRetrofit()
+    {
+        return  new Retrofit.Builder().baseUrl(strApiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getOkHttpClient())
+                .build();
+    }
+
+    public static ApiService getApiService()
+    {
+        // ApiService apiService = getRetrofit().create(ApiService.class);
+        return getRetrofit().create(ApiService.class);
+    }
+
+
+
+    public static RequestBody createPartFromString(String value) {
+        return RequestBody.create(MediaType.parse("multipart/form-data"), value);
     }
 
 

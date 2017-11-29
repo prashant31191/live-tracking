@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        >
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_insert_photo_lime_50_48dp"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="8dp"
+            />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Uncle Lkes"
+            android:textColor="@color/colorBlack"
+            android:layout_toRightOf="@+id/ivIcon"
+            android:singleLine="true"
+            />
+
+        <RatingBar
+            android:id="@+id/rbStars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivIcon"
+            android:layout_below="@+id/tvTitle"
+            android:rating="5"
+            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+
+            />
+
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Uncle Lkes"
+            android:textColor="@color/colorGray"
+            android:layout_toRightOf="@+id/ivIcon"
+            android:layout_alignBottom="@+id/ivIcon"
+            android:singleLine="true"
+            />
+
+
+        
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

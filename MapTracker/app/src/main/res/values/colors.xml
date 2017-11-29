@@ -29,4 +29,7 @@
     <color name="clrtext_pink_unpress">#80E91E63</color>
 
 
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#111111</color>
+    <color name="colorGray">#888888</color>
 </resources>

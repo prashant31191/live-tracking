@@ -18,11 +18,14 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+
+    maven { url "https://raw.githubusercontent.com/smilefam/SendBird-SDK-Android/master/" }
+    google()
 }
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "27.0.0"
 
     defaultConfig {
         applicationId "com.maptracker"
@@ -33,6 +36,8 @@ android {
 
         // Enabling multidex support.
         multiDexEnabled true
+
+        vectorDrawables.useSupportLibrary = true
 
     }
     buildTypes {
@@ -85,6 +90,13 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
+
+// https://docs.sendbird.com/android?_ga=2.117519692.43971395.1512210586-835113532.1512210586
+        compile 'com.sendbird.sdk:sendbird-android-sdk:3.0.44'
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 /*
 

@@ -51,6 +51,8 @@
         </activity>
 
         <activity android:name="com.markerdemo.MapMarkerActivity"/>
+        <activity android:name="com.sendbird.LoginActivity"/>
+        <activity android:name="com.sendbird.ChatActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

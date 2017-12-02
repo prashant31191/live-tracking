@@ -38,6 +38,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.markerdemo.api.ApiService;
 import com.markerdemo.utils.BasicAuthInterceptor;
+import com.sendbird.android.SendBird;
 import com.utils.PreferencesKeys;
 import com.utils.SharePrefrences;
 
@@ -71,6 +72,7 @@ public class App extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
 
+    private static final String APP_ID_SENDBIRD = "B1CF96C5-B670-4672-8071-952972B781FE";
     private static final String TWITTER_KEY = "sdasd";
     private static final String TWITTER_SECRET = "asdqaweq2e41234123aedasd";
 
@@ -146,6 +148,7 @@ public class App extends Application {
             //startService(new Intent(this, LoginSessionService.class));
             Fabric.with(this, new Crashlytics());
 
+            SendBird.init(APP_ID_SENDBIRD, mContext);
 
 
         } catch (Exception e) {

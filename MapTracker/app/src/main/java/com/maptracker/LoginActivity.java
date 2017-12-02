@@ -99,7 +99,8 @@ public class LoginActivity extends ActionBarActivity {
     }
     public void openMapMarker(View view) {
         App.showLog("===openMapMarker===");
-        Intent intent = new Intent(this, MapMarkerActivity.class);
+        Intent intent = new Intent(this, com.sendbird.LoginActivity.class);
+        //Intent intent = new Intent(this, MapMarkerActivity.class);
         intent.putExtra("channel", channelName);
         startActivity(intent);
     }

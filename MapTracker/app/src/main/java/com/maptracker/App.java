@@ -63,6 +63,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -663,30 +664,6 @@ public class App extends Application {
     }
 
 
-    public static String getDistanceInMeter(double sDLat, double sDLon, double eDLat, double eDLon) {
-        float distanceInMeters = 0;
-
-        Location startLocation = new Location("Start");
-        startLocation.setLatitude(sDLat);
-        startLocation.setLongitude(sDLon);
-
-        Location targetLocation = new Location("Ending");
-        targetLocation.setLatitude(eDLat);
-        targetLocation.setLongitude(eDLon);
-
-        distanceInMeters = (targetLocation.distanceTo(startLocation));
-
-
-        // distance = locationA.distanceTo(locationB);   // in meters
-        //  distance = locationA.distanceTo(locationB)/1000;   // in km
-
-        String strCalMeter = String.format("%.02f", distanceInMeters);
-
-        App.showLog("======METER====" + strCalMeter);
-
-        return strCalMeter;
-    }
-
 
     public static void showSnackBar(View view, String strMessage) {
         Snackbar snackbar = Snackbar.make(view, strMessage, Snackbar.LENGTH_SHORT);
@@ -732,6 +709,160 @@ public class App extends Application {
     public static RequestBody createPartFromString(String value) {
         return RequestBody.create(MediaType.parse("multipart/form-data"), value);
     }
+
+
+
+
+
+
+    public static String ADS_APP_bnr_1 = "ca-app-pub-4346653435295459/3038075274";
+    public static String ADS_APP_bnr_2 = "ca-app-pub-4346653435295459/4099165067";
+
+    public static String getRandomBannerId()
+    {
+        String strArr[] =
+                {
+                        App.ADS_APP_bnr_1,
+                        App.ADS_APP_bnr_2,
+
+
+                        App.ADS_APP_bnr_1,
+                        App.ADS_APP_bnr_2,
+
+                        App.ADS_APP_bnr_1,
+                        App.ADS_APP_bnr_2
+
+                };
+
+
+        //return App.ADS_APP_bnr_1;
+        return getRandomFromStringArr(strArr);
+
+    }
+    public static String ADS_APP_int_1 = "ca-app-pub-4346653435295459/2538671383";
+    public static String ADS_APP_int_2 = "ca-app-pub-4346653435295459/9564434109";
+
+    public static String getRandomIntId()
+    {
+        String strArr[] =
+                {
+                        App.ADS_APP_int_1,
+                        App.ADS_APP_int_2,
+
+
+                        App.ADS_APP_int_1,
+                        App.ADS_APP_int_2,
+
+                        App.ADS_APP_int_1,
+                        App.ADS_APP_int_2
+
+                };
+
+
+        //return App.ADS_APP_bnr_1;
+        return getRandomFromStringArr(strArr);
+
+    }
+
+
+
+    public static String getRandomFromStringArr(String[] strArr)
+    {
+        String strRandom = strArr[new Random().nextInt(strArr.length)];
+
+        App.showLog("===getRandomFromStringArr===="+strRandom);
+        return  strRandom;
+    }
+
+
+
+
+
+    public static boolean isCheckReachLocation(int rangeMeter,double sDLat, double sDLon, double eDLat, double eDLon)
+    {
+        float distanceInMeters = 0;
+
+        Location startLocation = new Location("Start");
+        startLocation.setLatitude(sDLat);
+        startLocation.setLongitude(sDLon);
+
+        Location targetLocation = new Location("Ending");
+        targetLocation.setLatitude(eDLat);
+        targetLocation.setLongitude(eDLon);
+
+        distanceInMeters =  (targetLocation.distanceTo(startLocation));
+
+
+        // distance = locationA.distanceTo(locationB);   // in meters
+        //  distance = locationA.distanceTo(locationB)/1000;   // in km
+
+        String strCalMeters = String.format("%.02f", distanceInMeters);
+
+        App.showLog("===checkReachLocation====strCalMeters====meters===="+strCalMeters);
+
+        if(distanceInMeters > rangeMeter )
+        {
+            return false;
+        }
+        else
+        {
+            App.showLog("====-----REACHED----=====checkReachLocation====strCalMeters====meters===="+strCalMeters);
+            return true;
+        }
+    }
+
+
+    public static String getDistanceInKM(double sDLat, double sDLon, double eDLat, double eDLon)
+    {
+        float distanceInMeters = 0;
+
+        Location startLocation = new Location("Start");
+        startLocation.setLatitude(sDLat);
+        startLocation.setLongitude(sDLon);
+
+        Location targetLocation = new Location("Ending");
+        targetLocation.setLatitude(eDLat);
+        targetLocation.setLongitude(eDLon);
+
+        distanceInMeters =  (targetLocation.distanceTo(startLocation) / 1000);
+
+
+        // distance = locationA.distanceTo(locationB);   // in meters
+        //  distance = locationA.distanceTo(locationB)/1000;   // in km
+
+        String strCalKM = String.format("%.02f", distanceInMeters);
+
+        App.showLog("======KM===="+strCalKM);
+
+        return strCalKM;
+    }
+
+
+    public static String getDistanceInMeter(double sDLat, double sDLon, double eDLat, double eDLon)
+    {
+        float distanceInMeters = 0;
+
+        Location startLocation = new Location("Start");
+        startLocation.setLatitude(sDLat);
+        startLocation.setLongitude(sDLon);
+
+        Location targetLocation = new Location("Ending");
+        targetLocation.setLatitude(eDLat);
+        targetLocation.setLongitude(eDLon);
+
+        distanceInMeters =  (targetLocation.distanceTo(startLocation));
+
+
+        // distance = locationA.distanceTo(locationB);   // in meters
+        //  distance = locationA.distanceTo(locationB)/1000;   // in km
+
+        String strCalMeter = String.format("%.02f", distanceInMeters);
+
+        App.showLog("======METER===="+strCalMeter);
+
+        return strCalMeter;
+    }
+
 
 
 }

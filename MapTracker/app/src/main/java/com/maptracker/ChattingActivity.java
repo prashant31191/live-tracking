@@ -2,12 +2,10 @@ package com.maptracker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,21 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.models.CommentListModel;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.callbacks.PNCallback;
@@ -49,12 +37,24 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-public class ChattingActivity extends ActionBarActivity {
+public class ChattingActivity extends AppCompatActivity {
+
+
+    @BindView(R.id.ivSend)
+    ImageView ivSend;
+    @BindView(R.id.etMsg)
+    EditText etMsg;
+
+    //NestedScrollView nsvComment;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
 
     // =========================================================================
     // Properties
@@ -68,26 +68,14 @@ public class ChattingActivity extends ActionBarActivity {
 
     // PubNub
     private PubNub mPubNub;
-    private String channelName  = "channel-chat";
-
-
-
-    // =========================================================================
-    // Activity Life Cycle
-    // =========================================================================
-
-    ImageView ivSend;
-    EditText etMsg;
-
-    //NestedScrollView nsvComment;
-    RecyclerView recyclerView;
+    private String channelName = "channel-chat";
 
 
     NotificationAdapter notificationAdapter;
     public ArrayList<CommentListModel> arrayListAllCommentListModel = new ArrayList<>();
 
-    String  strMessage = "";
-    String  strName = "";
+    String strMessage = "";
+    String strName = "";
 
     Realm realm;
 
@@ -97,16 +85,13 @@ public class ChattingActivity extends ActionBarActivity {
         try {
             App.showLog("=======onCreate===");
             setContentView(R.layout.activity_chatting);
-
-
-
+            ButterKnife.bind(this);
 
 
             RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
             // Clear the realm from last time
             //Realm.deleteRealm(realmConfiguration);
             realm = Realm.getInstance(realmConfiguration);
-
 
 
             // Get Channel Name
@@ -138,7 +123,7 @@ public class ChattingActivity extends ActionBarActivity {
                     strMessage = etMsg.getText().toString().trim();
 
                     if (mPubNub != null && strMessage.length() > 0) {
-                        PubNubManager.broadcastLocation(mPubNub, channelName, strMessage);
+                        PubNubManager.broadcastLocationChat(mPubNub, channelName, strMessage);
                         etMsg.setText("");
                     }
                 }
@@ -161,11 +146,9 @@ public class ChattingActivity extends ActionBarActivity {
                         mFollowButton.setTitle("Stop Viewing Your Friend's Location");
                     }
                 }
-            },1000);
+            }, 1000);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -177,7 +160,6 @@ public class ChattingActivity extends ActionBarActivity {
         mFollowButton = menu.findItem(R.id.follow_locations);
         return true;
     }
-
 
 
     // =========================================================================
@@ -297,29 +279,29 @@ public class ChattingActivity extends ActionBarActivity {
 
 
                     // {"message":"hello how are you ?","id":"1","alt":"0.0","name":"Josh","data":"add any data","lng":"72.501697","usertype":"1","lat":"23.0019311"}
-                    
 
-                    if(mainObject.has("message")) {
+
+                    if (mainObject.has("message")) {
                         strMessage = mainObject.getString("message");
-                        Log.e("====", "==message==strMessage ==" + strMessage );
+                        Log.e("====", "==message==strMessage ==" + strMessage);
 
-                    } if(mainObject.has("name")) {
+                    }
+                    if (mainObject.has("name")) {
                         strName = mainObject.getString("name");
-                        Log.e("====", "==name==strName ==" + strName );
+                        Log.e("====", "==name==strName ==" + strName);
 
                     }
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            
-                            if(strMessage.length() >1 && strName.length() >1)
-                            {
-                                CommentListModel commentListModel = new CommentListModel(strMessage,strName,channelName);
+
+                            if (strMessage.length() > 1 && strName.length() > 1) {
+                                CommentListModel commentListModel = new CommentListModel(strMessage, strName, channelName);
                                 setupDataInsert(commentListModel);
                                 arrayListAllCommentListModel.add(commentListModel);
 
-                                if(notificationAdapter !=null) {
+                                if (notificationAdapter != null) {
                                     notificationAdapter.notifyDataSetChanged();
                                     recyclerView.smoothScrollToPosition(notificationAdapter.getItemCount());
                                 }
@@ -346,16 +328,15 @@ public class ChattingActivity extends ActionBarActivity {
     }
 
 
-    private void setCommentData()
-    {
+    private void setCommentData() {
         App.showLog("=======setCommentData===");
 
-        arrayListAllCommentListModel =   getAllRecords();
+        arrayListAllCommentListModel = getAllRecords();
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChattingActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        
+
         notificationAdapter = new NotificationAdapter(ChattingActivity.this, arrayListAllCommentListModel);
         recyclerView.setAdapter(notificationAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -374,7 +355,7 @@ public class ChattingActivity extends ActionBarActivity {
             ArrayList<CommentListModel> arrayListDLocationModel = new ArrayList<>();
             arrayListDLocationModel.add(commentListModel);
 
-            if(arrayListDLocationModel !=null && arrayListDLocationModel.size() > 0){
+            if (arrayListDLocationModel != null && arrayListDLocationModel.size() > 0) {
 
 
                 realm.beginTransaction();
@@ -383,8 +364,8 @@ public class ChattingActivity extends ActionBarActivity {
 
 
                 ArrayList<CommentListModel> arrTemp = new ArrayList<CommentListModel>(realmDLocationModel);
-                for(int i=0; i < arrTemp.size(); i++){
-                    App.showLog(i+"===data -- =="+arrTemp.get(i).strMessage);
+                for (int i = 0; i < arrTemp.size(); i++) {
+                    App.showLog(i + "===data -- ==" + arrTemp.get(i).strMessage);
                 }
             }
 
@@ -394,22 +375,21 @@ public class ChattingActivity extends ActionBarActivity {
     }
 
 
-    private ArrayList<CommentListModel> getAllRecords(){
-        try{
+    private ArrayList<CommentListModel> getAllRecords() {
+        try {
 
             RealmResults<CommentListModel> arrCommentListModel = realm.where(CommentListModel.class).findAll();
 
-            App.showLog("===arrCommentListModel=="+arrCommentListModel);
+            App.showLog("===arrCommentListModel==" + arrCommentListModel);
 
             List<CommentListModel> arraCommentListModel = arrCommentListModel;
 
-            for(int k=0;k<arraCommentListModel.size();k++)
-            {
-                App.showLog(k+"===arraCommentListModel===strMessage=="+arraCommentListModel.get(k).strMessage);
+            for (int k = 0; k < arraCommentListModel.size(); k++) {
+                App.showLog(k + "===arraCommentListModel===strMessage==" + arraCommentListModel.get(k).strMessage);
             }
 
 
-            return  new ArrayList<CommentListModel>(arraCommentListModel);
+            return new ArrayList<CommentListModel>(arraCommentListModel);
 
 /*
             RealmQuery<CommentListModel> query = realm.where(CommentListModel.class);
@@ -422,9 +402,7 @@ public class ChattingActivity extends ActionBarActivity {
             App.showLog("===results=="+results);
 
             */
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
 
             return null;
@@ -455,19 +433,13 @@ public class ChattingActivity extends ActionBarActivity {
                 CommentListModel commentListModel = mArrListCommentListModel.get(i);
 
 
-
-
-
-                if(commentListModel.strName.equalsIgnoreCase(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName)))
-                {
+                if (commentListModel.strName.equalsIgnoreCase(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName))) {
                     versionViewHolder.rlUserData.setVisibility(View.VISIBLE);
                     versionViewHolder.tvName.setText(commentListModel.strName);
                     versionViewHolder.tvComment.setText(commentListModel.strMessage);
 
                     versionViewHolder.rlUserDataOther.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     versionViewHolder.rlUserData.setVisibility(View.GONE);
 
                     versionViewHolder.rlUserDataOther.setVisibility(View.VISIBLE);
@@ -484,9 +456,6 @@ public class ChattingActivity extends ActionBarActivity {
         public int getItemCount() {
             return mArrListCommentListModel.size();
         }
-
-
-
 
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
@@ -508,21 +477,14 @@ public class ChattingActivity extends ActionBarActivity {
 
                 tvName = (TextView) itemView.findViewById(R.id.tvName);
                 tvComment = (TextView) itemView.findViewById(R.id.tvComment);
-                tvNameOther  = (TextView) itemView.findViewById(R.id.tvNameOther);
-                tvCommentOther  = (TextView) itemView.findViewById(R.id.tvCommentOther);
+                tvNameOther = (TextView) itemView.findViewById(R.id.tvNameOther);
+                tvCommentOther = (TextView) itemView.findViewById(R.id.tvCommentOther);
 
 
             }
 
         }
     }
-
-
-
-
-
-
-
 
 
     private void stopFollowingLocation() {

@@ -68,7 +68,7 @@ public class PubNubManager {
         return new PubNub(config);
     }
 
-    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,double longitude, double altitude) {
+    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,double longitude, double altitude,float speed) {
 
         JSONObject json_message = new JSONObject();
         try {
@@ -81,6 +81,7 @@ public class PubNubManager {
             json_message.put("lat", latitude);
             json_message.put("lng", longitude);
             json_message.put("alt", altitude);
+            json_message.put("speed", ""+speed);
 
 
 
@@ -112,6 +113,7 @@ public class PubNubManager {
         message.put("lng", ""+longitude);
         message.put("alt", ""+altitude);
         message.put("timestamp", ""+DateTimeUtil.getTimeStampUtc());
+        message.put("speed", ""+speed);
 
 
         Log.d(TAG, "Sending JSON ####broadcastLocation#### Message: " + json_message.toString());
@@ -139,7 +141,7 @@ public class PubNubManager {
     }
 
 
-    public static void broadcastLocation(PubNub pubnub, String channelName,String strMessage) {
+    public static void broadcastLocationChat(PubNub pubnub, String channelName,String strMessage) {
 
         JSONObject json_message = new JSONObject();
         double latitude=0,longitude=0,altitude=0;

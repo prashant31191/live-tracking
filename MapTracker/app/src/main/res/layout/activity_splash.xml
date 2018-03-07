@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradiant"
+  android:padding="8dp"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnNext">
+    <TextView
+        android:id="@+id/tvData"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:textColor="#111111"
+        android:textSize="14dp"
+        android:text="Hello World!" />
+    </ScrollView>
+    <Button
+        android:visibility="gone"
+        android:text="NEXT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnNext" />
+</RelativeLayout>

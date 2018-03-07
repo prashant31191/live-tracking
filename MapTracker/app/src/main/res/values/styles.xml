@@ -4,13 +4,46 @@
     <style name="AppTheme" parent="Theme.AppCompat">
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="styleBtnBlack" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/black</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="STxtSmallBlack" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/txt_size_12</item>
+        <item name="android:textColor">@color/clrBlack3</item>
+    </style>
+    <style name="STxtNormalBlack" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/txt_size_16</item>
+        <item name="android:textColor">@color/clrBlack3</item>
+    </style>
+    <style name="STxtLargeBlack" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/txt_size_24</item>
+        <item name="android:textColor">@color/clrBlack3</item>
     </style>
 
 </resources>

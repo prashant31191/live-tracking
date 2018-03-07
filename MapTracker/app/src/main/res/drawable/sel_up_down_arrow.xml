@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true"
+        android:drawable="@drawable/ic_keyboard_arrow_up_blue_grey_500_48dp"/>
+    <item
+        android:drawable="@drawable/ic_keyboard_arrow_down_blue_grey_500_48dp"/>
+</selector>

@@ -87,7 +87,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
@@ -105,100 +104,160 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.android.support:multidex-1.0.2" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-wallet-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.code.gson:gson:2.8.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-cast-framework-9.4.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="com.android.support:multidex-1.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-nearby-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-auth-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-awareness-11.8.0" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-api:1.7.22@jar" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-analytics-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-basement-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-ui-25.3.1" level="project" />
-    <orderEntry type="library" name="__local_aars__:E.\Prashant\Github_Demo\live-tracking\MapTracker\app\libs\bcprov-jdk15on-1.47.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="com.android.support:support-compat-25.3.1" level="project" />
+    <orderEntry type="library" name="com.android.support:animated-vector-drawable-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-v4-impl-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-wearable-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-drive-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-base-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-utils-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-auth-license-11.8.0" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:runtime-1.0.0" level="project" />
     <orderEntry type="library" name="com.squareup.okio:okio:1.11.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-api-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-fitness-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-auth-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.0.2@jar" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-utils-25.3.1" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.0.2" level="project" />
-    <orderEntry type="library" name="com.android.support:support-v4-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-identity-9.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-compat-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-cast-framework-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-plus-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-iid-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.sendbird.sdk:sendbird-android-sdk:3.0.44@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-base-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-media-compat-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-crash-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-vision-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-gass-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-safetynet-9.4.0" level="project" />
     <orderEntry type="library" name="io.realm:realm-annotations:3.5.0@jar" level="project" />
+    <orderEntry type="library" name="com.jakewharton:butterknife-annotations:8.8.1@jar" level="project" />
     <orderEntry type="library" name="com.squareup.retrofit2:converter-gson:2.2.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-cast-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-iid-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-drive-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-contextmanager-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-auth-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-auth-common-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:transition-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-wearable-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:design-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-common-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-auth-module-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-appindexing-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-ads-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-common-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-dynamic-links-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-identity-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-places-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-common-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-cast-framework-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-ads-lite-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-games-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-media-compat-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-ads-lite-license-11.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support:multidex-instrumentation-1.0.2" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-config-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-vision-11.8.0" level="project" />
     <orderEntry type="library" name="com.squareup.picasso:picasso:2.5.2@jar" level="project" />
-    <orderEntry type="library" name="com.crashlytics.sdk.android:crashlytics-2.7.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-clearcut-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-games-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-auth-api-phone-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.squareup.retrofit2:retrofit:2.2.0@jar" level="project" />
-    <orderEntry type="library" name="com.github.jd-alexander:library-1.1.0" level="project" />
+    <orderEntry type="library" name="com.android.support:palette-v7-25.2.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-v4-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-auth-11.8.0" level="project" />
     <orderEntry type="library" name="com.crashlytics.sdk.android:answers-1.4.1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" name="com.android.support:recyclerview-v7-25.3.1" level="project" />
     <orderEntry type="library" name="com.getkeepsafe.relinker:relinker-1.2.2" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-messaging-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-impl-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-analytics-impl-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:appcompat-v7-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-storage-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-api-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.guava:guava:19.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-iid-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:transition-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-wallet-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-auth-api-phone-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-instantapps-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-maps-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-fido-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-analytics-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-ads-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-games-11.8.0" level="project" />
+    <orderEntry type="library" name="com.jakewharton:butterknife-8.8.1" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-storage-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.squareup.okhttp3:okhttp:3.6.0@jar" level="project" />
+    <orderEntry type="library" name="io.fabric.sdk.android:fabric-1.4.2" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-dynamic-links-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-auth-base-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-messaging-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-storage-common-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-instantapps-11.8.0" level="project" />
+    <orderEntry type="library" name="__local_aars__:D.\Prashant\Github_Demo\live-tracking\MapTracker\app\libs\bcprov-jdk15on-1.47.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-fitness-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-annotations:27.0.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-crash-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-gcm-11.8.0" level="project" />
+    <orderEntry type="library" name="com.oguzbabaoglu:fancymarkers-0.2" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-analytics-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-analytics-impl-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:multidex-1.0.2" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-crash-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-vision-common-11.8.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="com.android.support:multidex-1.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-iid-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-gcm-license-11.8.0" level="project" />
+    <orderEntry type="library" name="android.arch.lifecycle:common:1.0.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-fido-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-wearable-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-basement-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-iid-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-drive-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-vector-drawable-27.0.0" level="project" />
+    <orderEntry type="library" name="com.android.support:mediarouter-v7-25.2.0" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.0.2@jar" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.0.2" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-panorama-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-wallet-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-cast-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-appinvite-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-ui-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-messaging-license-11.8.0" level="project" />
+    <orderEntry type="library" name="android.arch.core:common:1.0.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-location-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.crashlytics.sdk.android:crashlytics-2.9.1" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-database-connection-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-safetynet-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.github.jd-alexander:library-1.1.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-fragment-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-impl-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-base-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-panorama-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-identity-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-v4-impl-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-places-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-config-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-plus-license-11.8.0" level="project" />
     <orderEntry type="library" name="io.realm:realm-android-library-3.5.0" level="project" />
+    <orderEntry type="library" name="com.android.support:design-27.0.0" level="project" />
     <orderEntry type="library" name="com.squareup.okhttp3:logging-interceptor:3.6.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-auth-base-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-database-connection-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-appindexing-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-iid-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-storage-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-cast-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-vision-common-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.prashant31191.azsdk:azsdk-1.0.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-config-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-gass-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-awareness-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-nearby-11.8.0" level="project" />
+    <orderEntry type="library" name="com.android.support:recyclerview-v7-27.0.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-appinvite-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-impl-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.pubnub:pubnub-gson:4.6.0@jar" level="project" />
     <orderEntry type="library" name="joda-time:joda-time:2.9.4@jar" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-analytics-impl-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-fragment-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-nearby-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:animated-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-location-9.4.0" level="project" />
-    <orderEntry type="library" name="com.squareup.okhttp3:okhttp:3.6.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-appinvite-9.4.0" level="project" />
-    <orderEntry type="library" name="io.fabric.sdk.android:fabric-1.4.1" level="project" />
-    <orderEntry type="library" name="com.crashlytics.sdk.android:crashlytics-core-2.4.1" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-storage-common-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.firebase:firebase-database-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:appcompat-v7-25.3.1" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-panorama-9.4.0" level="project" />
-    <orderEntry type="library" name="com.android.support:mediarouter-v7-23.0.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-9.4.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-database-connection-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-maps-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-database-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.crashlytics.sdk.android:crashlytics-core-2.6.1" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-safetynet-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-analytics-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-auth-base-11.8.0" level="project" />
     <orderEntry type="library" name="com.crashlytics.sdk.android:beta-1.2.7" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-places-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-ads-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-maps-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-plus-9.4.0" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-gcm-9.4.0" level="project" />
-    <orderEntry type="library" name="com.oguzbabaoglu:fancymarkers-0.2" level="project" />
-    <orderEntry type="library" name="com.android.support:support-annotations:25.3.1@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-vision-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-location-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-storage-common-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-database-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-gass-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.firebase:firebase-appindexing-11.8.0" level="project" />
+    <orderEntry type="library" name="org.greenrobot:eventbus:3.1.1@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-fitness-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tagmanager-api-11.8.0" level="project" />
     <orderEntry type="library" name="com.github.bumptech.glide:glide:3.7.0@jar" level="project" />
-    <orderEntry type="library" name="com.google.android.gms:play-services-ads-lite-9.4.0" level="project" />
-    <orderEntry type="module" module-name="googleadssdk" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-license-11.8.0" level="project" />
   </component>
 </module>

@@ -7,6 +7,8 @@
 
     <color name="lightgray">#e8e8e8</color>
     <color name="white">#FFFFFF</color>
+    <color name="clrTr50White">#80FFFFFF</color>
+    <color name="clrTr30White">#20FFFFFF</color>
     <color name="black">#000000</color>
     <color name="hint">#aaaaaa</color>
     <color name="light_blue">#007AFF</color>
@@ -32,4 +34,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#111111</color>
     <color name="colorGray">#888888</color>
+    <color name="clrBlack1">#111111</color>
+    <color name="clrBlack3">#333333</color>
+    <color name="clrBlack6">#666666</color>
 </resources>

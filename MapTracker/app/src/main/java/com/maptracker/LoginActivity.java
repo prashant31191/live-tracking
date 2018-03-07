@@ -5,28 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.multidex.MultiDex;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.azsdk.ads.AdsLoader;
 import com.crashlytics.android.Crashlytics;
-
-import google.ads.AdsDisplayUtil;
-import io.fabric.sdk.android.Fabric;
-
-import com.markerdemo.MapMarkerActivity;
+import com.demo.AdsSampleActivity;
 import com.utils.PreferencesKeys;
 
-public class LoginActivity extends ActionBarActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
+
+public class LoginActivity extends AppCompatActivity {
 
 
-    private EditText etMobileNo,etName;
-    private FloatingActionButton fabMap;
+    @BindView(R.id.etMobileNo)
+    EditText etMobileNo;
+    @BindView(R.id.etName)
+    EditText etName;
+    @BindView(R.id.fabMap)
+    FloatingActionButton fabMap;
 
-    private String channelName="",userName="Android-1";
+    private String channelName = "", userName = "Android-1";
     private static final String TAG = "Tracker - LoginActivity";
 
     // ==============================================================================
@@ -41,21 +46,22 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Fabric.with(this, new Crashlytics());
+        try {
+            setContentView(R.layout.activity_login);
+            ButterKnife.bind(this);
 
-        etName = (EditText) findViewById(R.id.etName);
-        etMobileNo = (EditText) findViewById(R.id.etMobileNo);
-        fabMap = (FloatingActionButton) findViewById(R.id.fabMap);
+            Fabric.with(this, new Crashlytics());
 
-        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName) !=null)
-        {
-            etName.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName));
-        }
-        if(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) !=null)
-        {
-            etMobileNo.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo));
-        }
+           /* etName = (EditText) findViewById(R.id.etName);
+            etMobileNo = (EditText) findViewById(R.id.etMobileNo);
+            fabMap = (FloatingActionButton) findViewById(R.id.fabMap);*/
+
+            if (App.sharePrefrences.getStringPref(PreferencesKeys.strUserName) != null) {
+                etName.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserName));
+            }
+            if (App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo) != null) {
+                etMobileNo.setText(App.sharePrefrences.getStringPref(PreferencesKeys.strUserMobileNo));
+            }
 
       /*  etMobileNo.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -78,6 +84,9 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 */
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -93,22 +102,25 @@ public class LoginActivity extends ActionBarActivity {
 
     public void shareLocation(View view) {
         App.showLog("===shareLocation===");
-            Log.d(TAG, "Share Location With Google Maps Chosen on channel: "
-                    + channelName);
-            callActivity(GMapsShareLocationActivity.class);
+        Log.d(TAG, "Share Location With Google Maps Chosen on channel: "
+                + channelName);
+        callActivity(GMapsShareLocationActivity.class);
     }
+
     public void openMapMarker(View view) {
         App.showLog("===openMapMarker===");
-        Intent intent = new Intent(this, com.sendbird.LoginActivity.class);
+        //Intent intent = new Intent(this, com.sendbird.LoginActivity.class);
+        Intent intent = new Intent(this, AdsSampleActivity.class);
         //Intent intent = new Intent(this, MapMarkerActivity.class);
         intent.putExtra("channel", channelName);
         startActivity(intent);
     }
+
     public void followLocation(View view) {
         App.showLog("===followLocation===");
         Log.d(TAG, "Follow Location With Google Maps Chosen on channel: "
-                    + channelName);
-            callActivity(GMapsFollowLocationActivity.class);
+                + channelName);
+        callActivity(GMapsFollowLocationActivity.class);
     }
 
     private void callActivity(Class<?> cls) {
@@ -118,12 +130,12 @@ public class LoginActivity extends ActionBarActivity {
         String message = "Mobile number : " + channelName;
 
 
-        if(channelName !=null && channelName.length() > 0) {
+        if (channelName != null && channelName.length() > 0) {
 
-            Toast.makeText(LoginActivity.this, message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
-            App.sharePrefrences.setPref(PreferencesKeys.strUserName,userName);
-            App.sharePrefrences.setPref(PreferencesKeys.strUserMobileNo,channelName);
+            App.sharePrefrences.setPref(PreferencesKeys.strUserName, userName);
+            App.sharePrefrences.setPref(PreferencesKeys.strUserMobileNo, channelName);
 
             logUser();
 
@@ -131,10 +143,8 @@ public class LoginActivity extends ActionBarActivity {
             intent.putExtra("channel", channelName);
             startActivity(intent);
 
-            AdsDisplayUtil.openBnrIntAdsScreen(LoginActivity.this, "", "");
-        }
-        else
-        {
+            AdsLoader.loadIntAds(LoginActivity.this, App.getRandomIntId());
+        } else {
             message = "Please enter mobile number";
             //forceCrash();
 
@@ -149,6 +159,7 @@ public class LoginActivity extends ActionBarActivity {
 
         }
     }
+
     public void forceCrash() {
         throw new RuntimeException("This is a crash");
     }

@@ -24,12 +24,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "27.0.0"
 
     defaultConfig {
         applicationId "com.maptracker"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -57,11 +57,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
 
-    compile 'com.google.android.gms:play-services:9.4.0'
+    compile "com.android.support:appcompat-v7:$rootProject.supportVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.supportVersion"
+    compile "com.android.support:design:$rootProject.supportVersion"
+
+    compile "com.google.android.gms:play-services:$rootProject.googlePlayServiceVersion"
     //compile 'com.google.android.gms:play-services:11.0.1'
     //compile 'com.google.maps.android:android-maps-utils:0.3+'
 //for mapmmarker
@@ -82,7 +83,7 @@ dependencies {
     // multidex issues
     compile 'com.android.support:multidex:1.0.0'
 
-    compile project(path: ':googleadssdk')
+   // compile project(path: ':googleadssdk')
 
     //for the add route points
     compile 'com.github.jd-alexander:library:1.1.0'
@@ -97,6 +98,14 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    //compile 'com.prashant31191.azsdk:azsdk:1.0.0'
+    //compile 'com.lib.azfblike:fb-like:1.0.1'
+    compile 'com.prashant31191.azsdk:azsdk:1.0.0'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
 }
 /*
 

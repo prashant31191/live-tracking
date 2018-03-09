@@ -1,0 +1,232 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--android:layout_below="@+id/llListData"-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/tvPost"
+                style="@style/App_BtnGreenTViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bsm_header_43himage"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/btn_txt_black_color"
+                android:gravity="center"
+                android:text="POST" />
+
+            <ImageView
+                android:id="@+id/ivExpandCollapse"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/bsm_header_43himage"
+                android:src="@drawable/ic_expand_more_black_48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@color/clrtext_pink_press"
+
+                android:paddingLeft="@dimen/m_10dp"
+                android:paddingRight="@dimen/m_10dp"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/llMapData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_above="@+id/tvPost"
+                android:orientation="vertical"
+                android:weightSum="1"
+                >
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.45"
+                    tools:context="drawpath.ActFeedAddDetail" />
+
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/nsvData"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.55"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/m_8dp"
+                            android:paddingRight="@dimen/m_8dp"
+                            android:paddingTop="@dimen/m_12dp"
+                            android:paddingBottom="@dimen/m_12dp"
+                            android:background="@color/clrBgDark"
+                            >
+                            <TextView
+                                android:id="@+id/tvKms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:textColor="@color/white"
+                                android:text="4.2 kms"
+                                android:textSize="@dimen/txt_size_16"
+                                android:paddingRight="@dimen/m_14dp"
+                                android:layout_centerVertical="true"
+
+                                />
+
+                            <TextView
+                            android:id="@+id/tvRouteFrom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tvKms"
+                            android:text="From : Street A-2 Ahmedabad"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/text_12s"
+                            android:singleLine="true"
+
+                            />
+
+                            <TextView
+                                android:id="@+id/tvRouteTo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/tvKms"
+                                android:layout_below="@+id/tvRouteFrom"
+                                android:layout_marginTop="@dimen/m_2dp"
+                                android:text="From : Street KH-5 Gandhinagar"
+                                android:textColor="@color/colorGray"
+                                android:textSize="@dimen/text_12s"
+                                android:singleLine="true"
+
+                                />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvTag1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Schedule"
+                            android:textColor="@color/clrBlack3"
+                            android:textSize="@dimen/txt_size_14"
+                            android:singleLine="true"
+                            android:padding="@dimen/m_8dp"
+                            android:layout_marginLeft="@dimen/m_2dp"
+                            />
+                        <RelativeLayout
+                            android:paddingLeft="@dimen/m_8dp"
+                            android:paddingRight="@dimen/m_8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:id="@+id/etDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="Date"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:textSize="18dp"
+                                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                                app:met_baseColor="@color/clrEtHint"
+                                app:met_floatingLabel="highlight"
+                                app:met_hideUnderline="false"
+                                app:met_primaryColor="@color/clrEtPrimaryLineText"
+                                android:layout_toLeftOf="@+id/vDummy"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true" />
+                            <View
+                                android:id="@+id/vDummy"
+                                android:layout_width="@dimen/m_14dp"
+                                android:layout_height="0dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@color/red"/>
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:id="@+id/etTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="Time"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                                android:textSize="18dp"
+                                app:met_baseColor="@color/clrEtHint"
+                                app:met_floatingLabel="highlight"
+                                app:met_hideUnderline="false"
+                                app:met_primaryColor="@color/clrEtPrimaryLineText"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/vDummy"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true" />
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:id="@+id/etMessage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="80dp"
+                                android:layout_below="@+id/etDate"
+                                android:hint="Message"
+                                android:inputType="textMultiLine"
+                                android:singleLine="false"
+                                android:minLines="3"
+                                android:maxLines="7"
+                                android:gravity="top|left"
+
+                                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                                android:textSize="18dp"
+                                app:met_baseColor="@color/clrEtHint"
+                                app:met_floatingLabel="highlight"
+                                app:met_hideUnderline="false"
+                                app:met_primaryColor="@color/clrEtPrimaryLineText" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlBackFeedList"
+        android:layout_width="@dimen/bsm_header_43m"
+        android:layout_height="@dimen/bsm_header_43m"
+        >
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left|top"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

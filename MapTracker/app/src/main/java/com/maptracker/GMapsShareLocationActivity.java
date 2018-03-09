@@ -21,6 +21,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.azsdk.location.utils.CLocation;
+import com.azsdk.location.utils.MyLocationService;
+import com.azsdk.location.utils.ResponseModel;
+import com.demo.LocationSampleActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationListener;
@@ -45,6 +48,10 @@ import java.util.Locale;
 
 import com.maptracker.R;
 import com.utils.AppFlags;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +82,8 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
     //SPEED
     @BindView(R.id.tvSpeed)
     TextView tvSpeed;
+    @BindView(R.id.tvSpeed2)
+    TextView tvSpeed2;
     @BindView(R.id.ivSpeed)
     ImageView ivSpeed;
 
@@ -310,13 +319,15 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                 {
                     ivSpeed.setSelected(true);
                 }
-                tvLocation.setText("Lat : "+location.getLatitude() +"\nLan : "+location.getLongitude());
 
-            } else if (location != null) {
-                CLocation cLocation = new CLocation(location);
-                updateSpeed(cLocation);
+
             }
 
+           /* if (location != null) {
+                CLocation cLocation = new CLocation(location);
+                updateSpeed(cLocation);
+            }*/
+            tvLocation.setText("Lat : "+location.getLatitude() +"\nLan : "+location.getLongitude());
 
 
         } catch (Exception e) {
@@ -415,7 +426,7 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
         try {
 
            // i = i + 1;
-            Log.i("111", "====updateSpeed=====");
+           // Log.i("111", "====updateSpeed=====");
             // Log.i("111","====location=====getLongitude==="+location.getLongitude());
             // Log.i("111","====location=====getLatitude==="+location.getLatitude());
 
@@ -440,7 +451,7 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                     strCurrentSpeed + " " + strUnits +
                     "\n--------------\n ";
 
-            tvSpeed.setText("Speed : " + strCurrentSpeed + " " + strUnits);
+            tvSpeed2.setText("Speed : " + strCurrentSpeed + " " + strUnits);
             speed = Float.parseFloat(strCurrentSpeed);
             if(speed < 60)
                 ivSpeed.setSelected(false);
@@ -448,7 +459,6 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
             {
                 ivSpeed.setSelected(true);
             }
-            tvLocation.setText("Lat : "+location.getLatitude() +"\nLan : "+location.getLongitude());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -491,33 +501,24 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                 }
                 if (addresses.get(0).getAdminArea() != null)
                 {
-                    fullAddress = fullAddress + "\nstate : "+addresses.get(0).getAdminArea();
+                    fullAddress = fullAddress + "\nState : "+addresses.get(0).getAdminArea();
                 }
                 if (addresses.get(0).getCountryName() != null)
                 {
-                    fullAddress = fullAddress + "\ncountry : "+addresses.get(0).getCountryName();
+                    fullAddress = fullAddress + "\nCountry : "+addresses.get(0).getCountryName();
                 }
                 if (addresses.get(0).getPostalCode() != null)
                 {
-                    fullAddress = fullAddress + "\npostalCode : "+addresses.get(0).getPostalCode();
+                    fullAddress = fullAddress + "\nPostalCode : "+addresses.get(0).getPostalCode();
                 }
                 if (addresses.get(0).getFeatureName() != null)
                 {
-                    fullAddress = fullAddress + "\nknownName : "+addresses.get(0).getFeatureName();
+                    fullAddress = fullAddress + "\nKnownName : "+addresses.get(0).getFeatureName();
                 }
             }
 
-            tvLocation.setText(
-                    "Lat : " + latitude +
-                            "\nLan : " + longitude
-            );
 
-            tvAddress.setText(
-                    "---Last fetch address---"+
-                    "\nLat : " + latitude +
-                            "\nLan : " + longitude +
-                            fullAddress
-            );
+            tvAddress.setText("---Last fetch address---" + "\nLat : " + latitude + "\nLan : " + longitude + fullAddress);
         }
         catch (Exception e)
         {
@@ -525,6 +526,65 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
         }
     }
 
+
+
+    @Override
+    public void onStart() {
+        try {
+            super.onStart();
+            EventBus.getDefault().unregister(this);
+            EventBus.getDefault().register(this);
+            startService(new Intent(this, MyLocationService.class));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        try {
+            super.onStop();
+            EventBus.getDefault().unregister(this);
+            stopService(new Intent(this, MyLocationService.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onResponseModel(ResponseModel responseModel) {
+
+        if (responseModel != null) {
+            App.showLog(" # OK \n" +
+                    "Lat : " + responseModel.getLocationLatLong().getLatitude() +
+                    "Lng : " + responseModel.getLocationLatLong().getLongitude() +
+                    "macAdd : " + responseModel.getMacAdressId() +
+                    "\n\n"
+
+            );
+
+            if (responseModel.getLocationLatLong().hasSpeed()) {
+            /*progressBarCircularIndeterminate.setVisibility(View.GONE);*/
+                String speed = String.format(Locale.ENGLISH, "%.0f", responseModel.getLocationLatLong().getSpeed() * 3.6) + "#km/h";
+
+              /*  if (sharedPreferences.getBoolean("miles_per_hour", false)) { // Convert to MPH
+                    speed = String.format(Locale.ENGLISH, "%.0f", responseModel.getLocationLatLong().getSpeed() * 3.6 * 0.62137119) + "mi/h";
+                }
+                */
+                SpannableString s = new SpannableString(speed);
+                s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
+                tvSpeed.setText("Speed !: " + s);
+            }
+
+            if (responseModel.getLocationLatLong() != null) {
+                CLocation cLocation = new CLocation(responseModel.getLocationLatLong());
+                updateSpeed(cLocation);
+            }
+        }
+
+    }
 
 
 

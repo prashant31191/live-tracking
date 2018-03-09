@@ -18,4 +18,15 @@
     <string name="follow_location">Start Viewing Your Friend\'s Location</string>
     <!-- <string name="action_settings">Settings</string> -->
 
+
+
+
+    <!--for the map demo-->
+    <string name="no_location_data_provided">no location data provided</string>
+    <string name="service_not_available">service not available</string>
+    <string name="invalid_lat_long_used">invalid lat long used</string>
+    <string name="no_address_found">no address found</string>
+    <string name="address_found">address found</string>
+
+
 </resources>

@@ -59,6 +59,16 @@ public class LocationSampleActivity extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.tvData)
+    public void clicktvData(TextView view) {
+        view.setText("Clear");
+    }
+
+    int counter = 0;
+
+
+
+
 
     @Override
     public void onStart() {
@@ -81,13 +91,6 @@ public class LocationSampleActivity extends AppCompatActivity {
         }
     }
 
-
-    @OnClick(R.id.tvData)
-    public void clicktvData(TextView view) {
-        view.setText("Clear");
-    }
-
-    int counter = 0;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResponseModel(ResponseModel responseModel) {
@@ -122,7 +125,6 @@ public class LocationSampleActivity extends AppCompatActivity {
 
     }
 
-    ;
 
 
     /*  @Subscribe

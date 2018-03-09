@@ -1,0 +1,127 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--android:layout_below="@+id/llListData"-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/llListData">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.trek.ActPostARoute" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/mLocationMarkerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/flCenterMarker"
+
+                android:text="12222222222221"
+                android:textSize="@dimen/m_10dp"
+                android:background="#2fff"
+                android:textColor="@color/clrBlueDarkRound"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:padding="@dimen/m_14dp"
+                />
+            <FrameLayout
+                android:id="@+id/flCenterMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/m_fd34dp"
+
+                >
+
+                <ImageView
+                    android:id="@+id/ivCMarker"
+                    android:layout_width="@dimen/m_fd34dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/m_fd34dp"
+                    android:src="@drawable/start_pin"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/tvCMarkerNo"
+                    android:layout_width="@dimen/m_fd30dp"
+                    android:layout_height="@dimen/m_fd30dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/shape_circle_white"
+                    android:text="1"
+                    android:textSize="@dimen/m_12dp"
+                    android:textColor="@color/clrBlueDarkRound"
+                    android:gravity="center"
+                    />
+
+
+
+            </FrameLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llListData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/clrtext_pink_unpress"
+            android:orientation="vertical"
+            android:padding="@dimen/m_14dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvLocationPoints"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fbAddPoint"
+            android:layout_width="@dimen/m_fd30dp"
+            android:layout_height="@dimen/m_fd30dp"
+            android:layout_below="@+id/llListData"
+            android:layout_marginLeft="@dimen/m_14dp"
+            android:layout_marginTop="-17dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_add_white_24dp"
+            app:backgroundTint="@color/clrBgDark"
+            android:padding="@dimen/m_2dp"
+            app:borderWidth="0dp"
+            app:elevation="2dp"
+            app:fabSize="normal" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fbDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/m_16dp"
+            android:src="@drawable/ic_navigate_next_black_24dp"
+            app:backgroundTint="@color/clrBgDark"
+
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+
+            app:fabSize="normal"
+
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

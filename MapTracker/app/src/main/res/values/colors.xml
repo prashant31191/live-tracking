@@ -28,6 +28,7 @@
 
 
     <color name="clrtext_pink_press">#E91E63</color>
+
     <color name="clrtext_pink_unpress">#80E91E63</color>
 
 
@@ -37,4 +38,30 @@
     <color name="clrBlack1">#111111</color>
     <color name="clrBlack3">#333333</color>
     <color name="clrBlack6">#666666</color>
+
+
+    <color name="clrBlueDarkRound">#2a6ba2</color>
+    <color name="clrGreenDarkRound">#299637</color>
+    <color name="clrBgDark">#1A202E</color>
+
+
+    <color name="clr_txt_main">#1A202E</color>
+
+    <color name="clr_txt_hint">#501A202E</color>
+
+
+    <color name="trBlack80">#88000000</color>
+
+    <color name="bgTrWhite2">#bbFFFFFF</color>
+    <color name="clrWhite">#FFFFFF</color>
+
+
+    <color name="clrEtHint">#79000000</color>
+    <color name="clrEtText">#000000</color>
+    <color name="clrEtPrimaryLineText">#000000</color>
+
+    <color name="clrEtDisableUnderLine">#79000000</color>
+
+    <color name="clrSaffron">#E91E63</color>
+
 </resources>

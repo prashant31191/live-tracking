@@ -6,6 +6,15 @@
     <dimen name="rw_mar_8dp">8dp</dimen>
     <dimen name="m_3dp">3dp</dimen>
     <dimen name="m_8dp">8dp</dimen>
+
+    <dimen name="m_2dp">2dp</dimen>
+    <dimen name="m_12dp">12dp</dimen>
+    <dimen name="m_14dp">14dp</dimen>
+    <dimen name="m_16dp">16dp</dimen>
+    <dimen name="m_fd34dp">34dp</dimen>
+    <dimen name="m_fd30dp">30dp</dimen>
+
+    <dimen name="m_5dp">5dp</dimen>
     <dimen name="m_10dp">10dp</dimen>
     <dimen name="m_15dp">15dp</dimen>
     <dimen name="m_20dp">20dp</dimen>
@@ -23,5 +32,10 @@
     <dimen name="txt_size_18">18dp</dimen>
     <dimen name="txt_size_20">20dp</dimen>
     <dimen name="txt_size_24">24dp</dimen>
+
+
+    <dimen name="btn_radious_d100">100dp</dimen>
+    <dimen name="bsm_header_43himage">43dp</dimen>
+    <dimen name="bsm_header_43m">43dp</dimen>
 
 </resources>

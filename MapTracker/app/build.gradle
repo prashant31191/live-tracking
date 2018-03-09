@@ -60,6 +60,7 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$rootProject.supportVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportVersion"
     compile "com.android.support:design:$rootProject.supportVersion"
 
     compile "com.google.android.gms:play-services:$rootProject.googlePlayServiceVersion"
@@ -102,6 +103,12 @@ dependencies {
     //compile 'com.prashant31191.azsdk:azsdk:1.0.0'
     //compile 'com.lib.azfblike:fb-like:1.0.1'
     compile 'com.prashant31191.azsdk:azsdk:1.0.0'
+
+    // MaterialRefreshLayout v1.3.0
+    compile 'com.cjj.materialrefeshlayout:library:1.3.0'
+    //Custome edittext floating label
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

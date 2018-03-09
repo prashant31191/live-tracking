@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.markerdemo.api.ApiService;
 import com.markerdemo.utils.BasicAuthInterceptor;
 import com.sendbird.android.SendBird;
+import com.utils.BroadcastReceiver;
 import com.utils.PreferencesKeys;
 import com.utils.SharePrefrences;
 
@@ -76,6 +77,8 @@ public class App extends Application {
     private static final String APP_ID_SENDBIRD = "B1CF96C5-B670-4672-8071-952972B781FE";
     private static final String TWITTER_KEY = "sdasd";
     private static final String TWITTER_SECRET = "asdqaweq2e41234123aedasd";
+
+    public static String packageTrack = "com.aznews";
 
 
     public static String strApiUrl = "https://www.wikileaf.org/masterapi/";
@@ -115,7 +118,7 @@ public class App extends Application {
     public static String ITAG_DETAILS = "details";
 
     // for the app context
-    static Context mContext;
+    public static Context mContext;
 
     // for the set app fontface or type face
     static Typeface tf_Regular, tf_Bold;
@@ -864,5 +867,70 @@ public class App extends Application {
     }
 
 
+    /*
+    * Background Service
+    * */
+    public static String strPrevTime = "";
+    public static BroadcastReceiver alarm;
+    public static void startAlarmServices(Context context)
+    {
+        if(alarm == null)
+        {
+            alarm = new BroadcastReceiver();
+        }
+        if(alarm != null)
+        {
+            alarm.CancelAlarm(context);
+            alarm.SetAlarm(context);
+        }
+        else
+        {
+            App.showLog(TAG, "Alarm is null");
+        }
 
+    }
+
+
+
+    public static float dpFromPx(final Context context, final float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
+
+
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static String dateConvert24to12Hour(String str24Hour)
+    {
+        showLog("======dateConvert24to12Hour======");
+        showLog("===str24Hour===="+str24Hour);
+        SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+        Date _24HourDt = null;
+        try {
+            _24HourDt = _24HourSDF.parse(str24Hour);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return str24Hour;
+        }
+        String str12Hour = _12HourSDF.format(_24HourDt);
+        showLog("===str12Hour===="+str12Hour);
+        return str12Hour;
+
+    }
 }

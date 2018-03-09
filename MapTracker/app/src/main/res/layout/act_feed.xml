@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--
+
+    android:background="@drawable/bg_gradiant"
+
+
+<android.support.design.widget.CoordinatorLayout
+
+android:background="@drawable/bg_gradiant"
+    android:layout_width="match_parent"
+    android:id="@+id/myCoordinator"
+    android:layout_height="match_parent">
+-->
+
+
+    <LinearLayout
+        android:id="@+id/llNodataTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:tint="@color/colorGray"
+            />
+
+        <TextView
+            android:id="@+id/tvNodataTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="No data found."
+            android:textColor="@color/clrBlack6"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
+    <com.cjj.MaterialRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_10dp"
+            android:layout_marginBottom="@dimen/m_10dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp" />
+
+        <!--android:background="@color/clr_list_bg"-->
+
+    </com.cjj.MaterialRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/fabtoolbar_container"
+        android:layout_margin="@dimen/m_15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fbAddPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_white_24dp"
+            app:backgroundTint="@color/clrBgDark"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            />
+
+    </RelativeLayout>
+
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+</RelativeLayout>

@@ -19,6 +19,7 @@ import com.utils.PreferencesKeys;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import drawpath.ActFeedList;
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
@@ -110,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
     public void openMapMarker(View view) {
         App.showLog("===openMapMarker===");
         //Intent intent = new Intent(this, com.sendbird.LoginActivity.class);
-        Intent intent = new Intent(this, AdsSampleActivity.class);
+        //Intent intent = new Intent(this, AdsSampleActivity.class);
+        Intent intent = new Intent(this, ActFeedList.class);
         //Intent intent = new Intent(this, MapMarkerActivity.class);
         intent.putExtra("channel", channelName);
         startActivity(intent);

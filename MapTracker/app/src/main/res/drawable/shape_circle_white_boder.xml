@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <corners android:radius="@dimen/btn_radious_d100"/>
+            <stroke android:width="2dp" android:color="@color/trBlack80"/>
+            <solid android:color="@color/clrGreenDarkRound"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <corners android:radius="@dimen/btn_radious_d100"/>
+            <stroke android:width="2dp" android:color="@color/trBlack80"/>
+            <solid android:color="@color/bgTrWhite2"/>
+        </shape>
+    </item>
+</selector>

@@ -29,6 +29,21 @@
 
         />
 
+    <TextView
+        android:id="@+id/tvSpeed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ivChat"
+        android:background="@drawable/round_black_shape"
+        android:alpha="0.5"
+        android:text="Speed : 0 km/h"
+        android:textSize="@dimen/txt_size_16"
+        android:textColor="@color/red"
+        android:padding="8dp"
+        android:layout_marginLeft="5dp"
+
+        />
+
     <Switch
         android:id="@+id/swAutoZoom"
         android:layout_width="wrap_content"
@@ -66,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ivSpeed"
-            android:text="Speed : 15 km/h"
+            android:text="Speed : 0 km/h"
             style="@style/STxtNormalBlack"
             android:padding="5dp"
             />

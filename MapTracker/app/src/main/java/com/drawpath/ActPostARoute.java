@@ -1,4 +1,4 @@
-package drawpath;
+package com.drawpath;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.drawpath.model.MyLatLng;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -54,7 +55,7 @@ import com.utils.AppFlags;
 
 import java.util.ArrayList;
 
-import drawpath.model.SelectPlaceModel;
+import com.drawpath.model.SelectPlaceModel;
 
 public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -62,9 +63,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
     LinearLayout llListData;
     RecyclerView rvLocationPoints;
-    FloatingActionButton fbAddPoint, fbDone;
-
-
+    FloatingActionButton fbAddPoint, fbExpandCollapse, fbDone;
 
 
     ArrayList<SelectPlaceModel> arrayListSelectPlaceModel = new ArrayList<>();
@@ -93,7 +92,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
     String mCityOutput;
     String mStateOutput;
     TextView mLocationText;
-  //  TextView mLocationMarkerText;
+    //  TextView mLocationMarkerText;
     TextView tvCMarkerNo;
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
     String strLat = "10.0";
@@ -101,6 +100,8 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
     public LatLng latLng = null;
     SelectPlaceModel selectPlaceModel = new SelectPlaceModel();
+
+    boolean isChangeLocation = false;
 
     @SuppressLint("InlinedApi")
     @Override
@@ -189,7 +190,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
                     strLat = "" + mCenterLatLong.latitude;
                     strLong = "" + mCenterLatLong.longitude;
 
-                  //  mLocationMarkerText.setText("Lat : " + strLat + "," + "Long : " + strLong);
+                    //  mLocationMarkerText.setText("Lat : " + strLat + "," + "Long : " + strLong);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -210,7 +211,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 //        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 //
 //        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
+//        MyLatLng sydney = new MyLatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
@@ -230,7 +231,11 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
-            changeMap(mLastLocation);
+            if (isChangeLocation == false) {
+                changeMap(mLastLocation);
+                isChangeLocation = true;
+            }
+
             Log.d(TAG, "ON connected");
 
         } else
@@ -263,8 +268,15 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public void onLocationChanged(Location location) {
         try {
-            if (location != null)
-                changeMap(location);
+            if (location != null) {
+                if (isChangeLocation == false) {
+                    changeMap(location);
+
+                    isChangeLocation = true;
+                }
+            }
+
+
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient, this);
 
@@ -275,7 +287,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        isChangeLocation = false;
     }
 
 
@@ -421,8 +433,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
         try {
             if (mAddressOutput != null) {
 
-                if(mAddressOutput.length() < 2)
-                {
+                if (mAddressOutput.length() < 2) {
                     mAddressOutput = "test 1231234";
                 }
 
@@ -437,8 +448,11 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
                 selectPlaceModel.strPoint = "" + lastSelectedPos + 1;
                 selectPlaceModel.strAddress = mAddressOutput;
-                selectPlaceModel.strHint = "Place " + lastSelectedPos + 1;
-                selectPlaceModel.latLng = latLng;
+                selectPlaceModel.strHint = "Place " + (lastSelectedPos + 1);
+
+                MyLatLng myLatLng = new MyLatLng("", latLng.latitude, latLng.longitude);
+
+                selectPlaceModel.latLng = myLatLng;
 
 
                 arrayListSelectPlaceModel.set(lastSelectedPos - 1, selectPlaceModel);
@@ -562,6 +576,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
         rvLocationPoints = (RecyclerView) findViewById(R.id.rvLocationPoints);
         fbAddPoint = (FloatingActionButton) findViewById(R.id.fbAddPoint);
+        fbExpandCollapse = (FloatingActionButton) findViewById(R.id.fbExpandCollapse);
         fbDone = (FloatingActionButton) findViewById(R.id.fbDone);
         //mLocationMarkerText = (TextView) findViewById(R.id.mLocationMarkerText);
         tvCMarkerNo = (TextView) findViewById(R.id.tvCMarkerNo);
@@ -604,6 +619,25 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
                 }
             });
 
+            rvLocationPoints.setVisibility(View.VISIBLE);
+            fbExpandCollapse.setSelected(true);
+            fbExpandCollapse.setImageResource(R.drawable.ic_expand_less_green_24dp);
+
+            fbExpandCollapse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fbExpandCollapse.isSelected() == true) {
+                        fbExpandCollapse.setSelected(false);
+                        fbExpandCollapse.setImageResource(R.drawable.ic_expand_more_green_24dp);
+                        rvLocationPoints.setVisibility(View.GONE);
+                    } else {
+                        fbExpandCollapse.setSelected(true);
+                        fbExpandCollapse.setImageResource(R.drawable.ic_expand_less_green_24dp);
+                        rvLocationPoints.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
           /*  fbDone.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -634,17 +668,14 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
                     }
 
-                    if(fbDone.getTag().toString().equalsIgnoreCase("1"))
-                    {
+                    if (fbDone.getTag().toString().equalsIgnoreCase("1")) {
                         AppFlags.arrayListSelectPlaceModel = arrayListSelectPlaceModel;
 
-                        Intent intent = new Intent(ActPostARoute.this,ActFeedAddDetail.class);
-                        intent.putExtra(AppFlags.tagFrom,"ActPostARoute");
+                        Intent intent = new Intent(ActPostARoute.this, ActFeedAddDetail.class);
+                        intent.putExtra(AppFlags.tagFrom, "ActPostARoute");
                         startActivity(intent);
 
-                    }
-                    else
-                    {
+                    } else {
                         setAddAllMarkers();
                     }
                 }
@@ -683,19 +714,18 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
 
 
     public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.VersionViewHolder> {
-       // ArrayList<SelectPlaceModel> mArrListNotificationListModel;
+        // ArrayList<SelectPlaceModel> mArrListNotificationListModel;
         Context mContext;
 
 
-        public
-        NotificationAdapter(Context context, ArrayList<SelectPlaceModel> arrayListFollowers) {
+        public NotificationAdapter(Context context, ArrayList<SelectPlaceModel> arrayListFollowers) {
             //mArrListNotificationListModel = arrayListFollowers;
             mContext = context;
         }
 
         @Override
         public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.raw_post_route_place, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_post_route_place, viewGroup, false);
             VersionViewHolder viewHolder = new VersionViewHolder(view);
             return viewHolder;
         }
@@ -708,6 +738,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
                 SelectPlaceModel selectPlaceModel = arrayListSelectPlaceModel.get(i);
                 versionViewHolder.tvNumber.setText("" + (i + 1));
                 versionViewHolder.tvAddress.setText(selectPlaceModel.strAddress);
+                versionViewHolder.tvAddress.setSelected(true);
                 //versionViewHolder.tvAddress.setHint(selectPlaceModel.strHint);
                 versionViewHolder.tvAddress.setHint("Place " + (i + 1));
                 versionViewHolder.ivClose.setOnClickListener(new View.OnClickListener() {
@@ -732,7 +763,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
                     public void onClick(View v) {
                         App.showLog("====select point for====" + i);
 
-                       // System.out.println("============" + (SelectPlaceModel) mArrListNotificationListModel.get(i));
+                        // System.out.println("============" + (SelectPlaceModel) mArrListNotificationListModel.get(i));
                         System.out.println("============" + (SelectPlaceModel) arrayListSelectPlaceModel.get(i));
                         //    mLocationText = versionViewHolder.tvAddress;
                         //    lastSelectedPos = i+1;
@@ -748,8 +779,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
         @Override
         public int getItemCount() {
             //return mArrListNotificationListModel.size();
-            if(arrayListSelectPlaceModel == null)
-            {
+            if (arrayListSelectPlaceModel == null) {
                 return 0;
             }
             return arrayListSelectPlaceModel.size();
@@ -789,9 +819,6 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
             setAddAllMarkers();
 
 
-
-
-
         }
 
 
@@ -818,8 +845,6 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
     }
 
 
-
-
     private Marker customMarker;
 
     public void setAddAllMarkers() {
@@ -835,8 +860,9 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
                 tvMarkerNumber.setTypeface(App.getFont_Regular());
                 tvMarkerNumber.setText("" + (i + 1));
 
+                LatLng latLng = new LatLng(arrayListSelectPlaceModel.get(i).latLng.latitude, arrayListSelectPlaceModel.get(i).latLng.longitude);
                 customMarker = mMap.addMarker(new MarkerOptions()
-                        .position(arrayListSelectPlaceModel.get(i).latLng)
+                        .position(latLng)
                         .title(arrayListSelectPlaceModel.get(i).strAddress)
                         .snippet(arrayListSelectPlaceModel.get(i).strHint)
                         .icon(BitmapDescriptorFactory
@@ -855,6 +881,7 @@ public class ActPostARoute extends AppCompatActivity implements OnMapReadyCallba
             }
         });
     }
+
     public Bitmap createDrawableFromView(View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

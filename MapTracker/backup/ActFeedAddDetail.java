@@ -1,4 +1,4 @@
-package drawpath;
+package com.drawpath;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,7 +34,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -69,11 +68,14 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     RelativeLayout rlBackFeedList;
     Context mContext;
-    ImageView ivExpandCollapse;
+    FloatingActionButton fbExpandCollapse;
     NestedScrollView nsvData;
 
-    TextView tvKms, tvRouteFrom, tvRouteTo, tvTag1, tvPost;
+    TextView tvKms, tvRouteFrom, tvRouteTo, tvPost;
     MaterialEditText etDate, etTime, etMessage;
+
+    String strRouteFrom = "";
+    String strRouteTo = "";
 
 
 
@@ -143,18 +145,17 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
         tvKms = (TextView) findViewById(R.id.tvKms);
         tvRouteFrom = (TextView) findViewById(R.id.tvRouteFrom);
         tvRouteTo = (TextView) findViewById(R.id.tvRouteTo);
-        tvTag1 = (TextView) findViewById(R.id.tvTag1);
         tvPost = (TextView) findViewById(R.id.tvPost);
 
         etDate = (MaterialEditText) findViewById(R.id.etDate);
         etTime = (MaterialEditText) findViewById(R.id.etTime);
         etMessage = (MaterialEditText) findViewById(R.id.etMessage);
 
-        ivExpandCollapse = (ImageView) findViewById(R.id.ivExpandCollapse);
+        fbExpandCollapse = (FloatingActionButton) findViewById(R.id.fbExpandCollapse);
         nsvData = (NestedScrollView) findViewById(R.id.nsvData);
 
-        ivExpandCollapse.setImageResource(R.drawable.ic_expand_less_black_48dp);
-        ivExpandCollapse.setSelected(true);
+        fbExpandCollapse.setImageResource(R.drawable.ic_expand_less_green_24dp);
+        fbExpandCollapse.setSelected(true);
         nsvData.setVisibility(View.GONE);
 
 
@@ -173,19 +174,19 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
-            ivExpandCollapse.setOnClickListener(new View.OnClickListener() {
+            fbExpandCollapse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(ivExpandCollapse.isSelected() == true)
+                    if(fbExpandCollapse.isSelected() == true)
                     {
-                        ivExpandCollapse.setImageResource(R.drawable.ic_expand_more_black_48dp);
-                        ivExpandCollapse.setSelected(false);
+                        fbExpandCollapse.setImageResource(R.drawable.ic_expand_more_green_24dp);
+                        fbExpandCollapse.setSelected(false);
                         nsvData.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        ivExpandCollapse.setImageResource(R.drawable.ic_expand_less_black_48dp);
-                        ivExpandCollapse.setSelected(true);
+                        fbExpandCollapse.setImageResource(R.drawable.ic_expand_less_green_24dp);
+                        fbExpandCollapse.setSelected(true);
                         nsvData.setVisibility(View.GONE);
                     }
                 }
@@ -249,7 +250,6 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
         tvKms.setTypeface(App.getFont_Regular());
         tvRouteFrom.setTypeface(App.getFont_Regular());
         tvRouteTo.setTypeface(App.getFont_Regular());
-        tvTag1.setTypeface(App.getFont_Regular());
         tvPost.setTypeface(App.getFont_Bold());
 
     }
@@ -265,6 +265,24 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
 
             for (int i = 0; i < AppFlags.arrayListSelectPlaceModel.size(); i++) {
                 App.showLog("=====0000======" + i);
+
+                if(i==0)
+                {
+                    strRouteFrom = AppFlags.arrayListSelectPlaceModel.get(i).strAddress;
+                }
+
+                if(i == AppFlags.arrayListSelectPlaceModel.size() - 1)
+                {
+                    strRouteTo = AppFlags.arrayListSelectPlaceModel.get(i).strAddress;
+
+                    tvRouteFrom.setText("From : "+strRouteFrom);
+                    tvRouteTo.setText("To : "+strRouteTo);
+                    tvRouteFrom.setSelected(true);
+                    tvRouteTo.setSelected(true);
+                }
+
+
+
                 if (AppFlags.arrayListSelectPlaceModel.get(i).latLng != null && AppFlags.arrayListSelectPlaceModel.get(i).strAddress.length() > 0) {
                     App.showLog("===if==0000======" + i);
 
@@ -284,8 +302,6 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
 
                     App.showLog("=====i==" + i + "==i===LatLng======" + AppFlags.arrayListSelectPlaceModel.get(i).latLng);
                     if (i >= 1) {
-
-
                         // Getting URL to the Google Directions API
                         String url = getDirectionsUrl(AppFlags.arrayListSelectPlaceModel.get((i - 1)).latLng, AppFlags.arrayListSelectPlaceModel.get(i).latLng);
                         //String url = getMapsApiDirectionsUrl();
@@ -321,12 +337,15 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
 
             mMap.setPadding((int) App.pxFromDp(ActFeedAddDetail.this, 8), (int) App.pxFromDp(ActFeedAddDetail.this, 45), 0, 0); // (int left, int top, int right, int bottom)
 
+           /*
+            no click effect show
+
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     return true;
                 }
-            });
+            });*/
 
 
           /*  new Handler().postDelayed(new Runnable() {
@@ -681,7 +700,7 @@ public class ActFeedAddDetail extends AppCompatActivity implements OnMapReadyCal
 
 
                         CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(latLongStart).zoom(13f).tilt(70).build();
+                                .target(latLongStart).zoom(19f).tilt(70).build();
 
                         if (ActivityCompat.checkSelfPermission(ActFeedAddDetail.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActFeedAddDetail.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             // TODO: Consider calling

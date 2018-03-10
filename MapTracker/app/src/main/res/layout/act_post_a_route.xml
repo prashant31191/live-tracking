@@ -78,14 +78,16 @@
 
         <LinearLayout
             android:id="@+id/llListData"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/clrtext_pink_unpress"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:padding="@dimen/m_14dp">
+            android:padding="@dimen/m_8dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvLocationPoints"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="150dp" />
         </LinearLayout>
@@ -101,6 +103,24 @@
             android:src="@drawable/ic_add_white_24dp"
             app:backgroundTint="@color/clrBgDark"
             android:padding="@dimen/m_2dp"
+            app:borderWidth="0dp"
+            app:elevation="2dp"
+            app:fabSize="normal" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fbExpandCollapse"
+            android:layout_width="@dimen/m_fd30dp"
+            android:layout_height="@dimen/m_fd30dp"
+            android:layout_alignBottom="@+id/fbAddPoint"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/llListData"
+            android:layout_marginRight="@dimen/m_14dp"
+            android:layout_marginTop="-17dp"
+            android:padding="@dimen/m_2dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_expand_less_green_24dp"
+            android:tint="@color/clrGreenDarkRound"
+            app:backgroundTint="@color/clrBgDark"
             app:borderWidth="0dp"
             app:elevation="2dp"
             app:fabSize="normal" />

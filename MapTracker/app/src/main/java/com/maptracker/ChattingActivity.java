@@ -421,7 +421,7 @@ public class ChattingActivity extends AppCompatActivity {
 
         @Override
         public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.raw_comments, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_comments, viewGroup, false);
             VersionViewHolder viewHolder = new VersionViewHolder(view);
             return viewHolder;
         }

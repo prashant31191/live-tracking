@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -181,6 +182,18 @@ public class GMapsFollowLocationActivity extends AppCompatActivity implements On
             actionBar.setDisplayShowHomeEnabled(false);
             actionBar.setDisplayShowTitleEnabled(false);
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // auto start view
+                    Log.d(TAG, "'Follow Friend's Location' Button Pressed");
+                    mRequestingLocationUpdates = !mRequestingLocationUpdates;
+                    if (mRequestingLocationUpdates) {
+                        startFollowingLocation();
+                        mFollowButton.setTitle("Stop Viewing Your Friend's Location");
+                    }
+                }
+            }, 1000);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,6 +240,11 @@ public class GMapsFollowLocationActivity extends AppCompatActivity implements On
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+
+
+
+
+
         }
     }
 

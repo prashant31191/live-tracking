@@ -68,7 +68,7 @@ public class PubNubManager {
         return new PubNub(config);
     }
 
-    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,double longitude, double altitude,float speed) {
+    public static void broadcastLocation(PubNub pubnub, String channelName, double latitude,double longitude, double altitude,int speed) {
 
         JSONObject json_message = new JSONObject();
         try {
@@ -234,7 +234,7 @@ public class PubNubManager {
               /*  JSONObject jsonMessage = (JSONObject) message;
                 double mLat = jsonMessage.getDouble("lat");
                 double mLng = jsonMessage.getDouble("lng");
-                mLatLng = new LatLng(mLat, mLng);
+                mLatLng = new MyLatLng(mLat, mLng);
 
                 Log.d("PUBNUB==1==", "--SET Lat--"+mLat);
                 Log.d("PUBNUB==2==", "--SET Lng--"+mLng);*/

@@ -46,8 +46,11 @@ import com.utils.SharePrefrences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.drawpath.model.RouteListModel;
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -56,14 +59,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -123,6 +129,10 @@ public class App extends Application {
     // for the set app fontface or type face
     static Typeface tf_Regular, tf_Bold;
 
+    //for the realm database encryption and decryption key
+    public static String RealmEncryptionKey = "f263575e7b00a977a8e915feb9bfb2f992b2b8f11eaaaaaaa46523132131689465413132132165469487987987643545465464abbbbbccdddffff111222333";
+    public static RealmConfiguration realmConfiguration;
+
 
 
     @Override
@@ -143,15 +153,19 @@ public class App extends Application {
             mContext = getApplicationContext();
             sharePrefrences = new SharePrefrences(App.this);
 
-            Realm.init(this);
 
             getFont_Regular();
             getFont_Bold();
             createAppFolder();
 
-            //startService(new Intent(this, LoginSessionService.class));
-            Fabric.with(this, new Crashlytics());
 
+            Realm.init(this);
+            Fabric.with(this, new Crashlytics());
+            realmConfiguration = getRealmConfiguration();
+
+
+
+            //startService(new Intent(this, LoginSessionService.class));
             SendBird.init(APP_ID_SENDBIRD, mContext);
 
 
@@ -240,6 +254,27 @@ public class App extends Application {
             }
         }
         return final_date;
+    }
+
+    public static String getLongToYYMMDDDate(String strLongDate) {
+        try{
+            if(App.isNumeric(strLongDate) || strLongDate.contains("l")) {
+
+                long val = Long.parseLong(strLongDate);
+                Date date = new Date((val*1000));
+                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateText = df2.format(date);
+                showLog("===date=="+dateText);
+
+                return dateText;
+            }
+            return strLongDate;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return strLongDate;
+        }
     }
 
 
@@ -892,6 +927,10 @@ public class App extends Application {
 
 
 
+    public static Long getCurrentTimeStamp()
+    {
+        return System.currentTimeMillis()/1000;
+    }
     public static float dpFromPx(final Context context, final float px) {
         return px / context.getResources().getDisplayMetrics().density;
     }
@@ -933,4 +972,235 @@ public class App extends Application {
         return str12Hour;
 
     }
+
+
+
+
+    // realm databse
+
+    public static RealmConfiguration getRealmConfiguration() {
+        if (realmConfiguration != null) {
+            return realmConfiguration;
+        } else {
+/*
+
+            realmConfiguration = new RealmConfiguration.Builder()
+                    .encryptionKey(App.getEncryptRawKey())
+                    .build();
+*/
+
+
+            realmConfiguration = new RealmConfiguration.Builder()
+                    .deleteRealmIfMigrationNeeded()
+                    .encryptionKey(App.getEncryptRawKey())
+                    .build();
+
+
+            return realmConfiguration;
+        }
+    }
+
+
+    // for the encrypt Encrypt
+    public static byte[] getEncryptRawKey() {
+
+        try {
+            /*byte[] bytes64Key = App.RealmEncryptionKey.getBytes("UTF-8");
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+            sr.setSeed(bytes64Key);
+            kgen.init(128, sr);
+            SecretKey skey = kgen.generateKey();
+            byte[] raw = skey.getEncoded();*/
+
+            byte[] key = new BigInteger(App.RealmEncryptionKey, 16).toByteArray();
+            return key;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static boolean checkDbFileIsExist() {
+        try {
+            App.showLog("=======checkDbFileIsExist=====");
+
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "download.realm");
+            if (file.exists()) {
+                //Do something
+                return true;
+            } else {
+                // Do something else.
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteFile() {
+        App.showLog("=======deleteFile=====");
+
+        try {
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "download.realm");
+            if (file.exists()) {
+                //Do something
+                file.delete();
+
+                return true;
+            } else {
+                // Do something else.
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public static boolean renameFile(File from, File to) {
+        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
+    }
+
+
+    //Upate for like &  unlike
+
+    public static void addNewRoute(Realm realm, RouteListModel mRouteListModel) {
+        try {
+            App.showLog("========insert-set-as-new route=====");
+
+            realm.beginTransaction();
+            RouteListModel RouteListModel = realm.copyToRealmOrUpdate(mRouteListModel);
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                realm.commitTransaction();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+
+    public static List<RouteListModel> fetchOfflineRouteList(Realm realm) {
+        try {
+            App.showLog("========fetchOfflineRouteList=====");
+
+            RealmResults<RouteListModel> resultsList = realm.where(RouteListModel.class).findAll();
+            App.showLog("===resultsList==" + resultsList);
+            List<RouteListModel> mListRouteListModel = resultsList;
+            mListRouteListModel = new ArrayList<RouteListModel>(mListRouteListModel);
+
+            if (mListRouteListModel != null) {
+                App.showLog("====mListRouteListModel===" + mListRouteListModel.size());
+                return mListRouteListModel;
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    public static void removeFromOfflineRoute(Realm realm, RouteListModel routeListModel) {
+        try {
+
+            App.showLog("========insert-set-as-favourite=====");
+            realm.beginTransaction();
+
+            RealmResults<RouteListModel> arrDLocationModel;
+            if (routeListModel.timestamp != null && routeListModel.timestamp.length() > 0) {
+                arrDLocationModel = realm.where(RouteListModel.class)
+                        .beginGroup()
+                        .equalTo("timestamp", routeListModel.timestamp)
+                        // .equalTo("Exchange",mRouteListModel.Exchange)
+                        .endGroup()
+                        .findAll();
+            } else {
+                arrDLocationModel = realm.where(RouteListModel.class)
+                        .beginGroup()
+                        .equalTo("timestamp", routeListModel.timestamp)
+                        .endGroup()
+                        .findAll();
+
+            }
+
+           /* RealmResults<StocklistItemListResponse> arrDLocationModel = realm.where(StocklistItemListResponse.class)
+                    .beginGroup()
+                    .equalTo("Symbol", mRouteListModel.Symbol)
+                    .equalTo("Exchange",mRouteListModel.Exchange)
+                    .or()
+                    .equalTo("Exchange","")
+                    *//*.or()
+                    .contains("name", "Jo")*//*
+                    .endGroup()
+
+                    .findAll();*/
+
+            arrDLocationModel.deleteAllFromRealm();
+            realm.commitTransaction();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    
+    public static void addToFavouriteRoute(Realm realm, RouteListModel mRouteListModel) {
+        try {
+            App.showLog("========insert-set-as-favourite=====");
+
+
+            realm.beginTransaction();
+            mRouteListModel.favourite = "1";
+            RouteListModel RouteListModel = realm.copyToRealmOrUpdate(mRouteListModel);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                realm.commitTransaction();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public static void removeFromFavouriteRoute(Realm realm, RouteListModel mRouteListModel) {
+        try {
+            App.showLog("========remove-set-as-favourite=====");
+
+
+            realm.beginTransaction();
+            mRouteListModel.favourite = "0";
+            // RouteListModel RouteListModel = realm.copyToRealm(mRouteListModel);
+            RouteListModel RouteListModel = realm.copyToRealmOrUpdate(mRouteListModel);
+            realm.commitTransaction();
+
+            //getAllFavouriteOfflineNews(realm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                realm.commitTransaction();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
 }

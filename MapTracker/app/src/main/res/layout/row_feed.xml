@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/rw_mar_8dp"
+    android:layout_marginRight="@dimen/rw_mar_8dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardlist_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        card_view:cardBackgroundColor="@color/clrBgDark"
+        card_view:cardCornerRadius="5dp"
+
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true">
+
+
+        <RelativeLayout
+            android:id="@+id/rlMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/llTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/m_70dp"
+
+                    android:paddingBottom="@dimen/m_12dp"
+                    android:paddingLeft="@dimen/m_8dp"
+                    android:paddingRight="@dimen/m_8dp"
+                    android:paddingTop="@dimen/m_12dp">
+
+                    <TextView
+                        android:id="@+id/tvKms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/m_14dp"
+                        android:text="4.2
+kms"
+                        android:gravity="center"
+
+
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_16"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tvRouteFrom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvKms"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:text="From : Street A-2 Ahmedabad"
+                        android:textColor="@color/clrTr50White"
+                        android:textSize="@dimen/text_12s"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tvRouteTo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvRouteFrom"
+                        android:layout_marginTop="@dimen/m_2dp"
+                        android:layout_toRightOf="@+id/tvKms"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:text="From : Street KH-5 Gandhinagar"
+                        android:textColor="@color/clrTr50White"
+
+                        android:textSize="@dimen/text_12s"
+
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlUserPostData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llTop">
+
+                <ImageView
+                    android:id="@+id/ivImagePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:background="@color/white"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_hdr_strong_grey_300_48dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tvTextPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivImagePost"
+
+                    android:padding="@dimen/rw_mar_8dp"
+                    android:text="this is some dummy text \n d sahdfk khaksd hkj \n asdkn asnd ahd\n szhdc ashd \n sdjfh as 5♣♦☺ awesom 1♪8◘"
+                    android:textColor="@color/clrTr50White"
+
+                    android:textSize="@dimen/text_12s"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvTextPost"
+                    android:layout_marginTop="@dimen/m_2dp"
+                    android:layout_marginBottom="@dimen/rw_mar_8dp"
+                    android:layout_marginRight="@dimen/rw_mar_8dp"
+
+                    android:layout_alignParentRight="true"
+                    android:singleLine="true"
+                    android:text="24 Nov 2018"
+                    android:textColor="@color/white"
+
+                    android:textSize="@dimen/text_10s"
+
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

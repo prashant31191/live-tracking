@@ -78,12 +78,12 @@
             />
         <activity android:name="com.demo.LocationSampleActivity"/>
 
-        <activity android:name="drawpath.ActPostARoute"/>
-        <activity android:name="drawpath.ActFeedList"/>
-        <activity android:name="drawpath.ActFeedAddDetail"/>
+        <activity android:name="com.drawpath.ActPostARoute"/>
+        <activity android:name="com.drawpath.ActFeedList"/>
+        <activity android:name="com.drawpath.ActFeedAddDetail"/>
 
         <service
-            android:name="drawpath.FetchAddressIntentService"
+            android:name="com.drawpath.FetchAddressIntentService"
             android:exported="false"/>
 
         <meta-data

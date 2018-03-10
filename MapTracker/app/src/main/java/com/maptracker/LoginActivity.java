@@ -14,12 +14,11 @@ import android.widget.Toast;
 
 import com.azsdk.ads.AdsLoader;
 import com.crashlytics.android.Crashlytics;
-import com.demo.AdsSampleActivity;
 import com.utils.PreferencesKeys;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import drawpath.ActFeedList;
+import com.drawpath.ActFeedList;
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {

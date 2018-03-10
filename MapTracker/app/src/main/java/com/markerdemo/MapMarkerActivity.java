@@ -342,7 +342,7 @@ public class MapMarkerActivity extends AppCompatActivity implements
             App.showLog("333333333====Lat : " + strSwLat + "," + "Long : " + strSwLng);
 
             //11---
-           /* updateLocation(new LatLng(location.getLatitude(), location.getLongitude()),false);
+           /* updateLocation(new MyLatLng(location.getLatitude(), location.getLongitude()),false);
             mLocationMarkerText.setText("##--##Lat : " + strLat + "," + "Long : " + strLong);
 */
 
@@ -512,7 +512,7 @@ public class MapMarkerActivity extends AppCompatActivity implements
 
         @Override
         public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.raw_maplist, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_maplist, viewGroup, false);
             VersionViewHolder viewHolder = new VersionViewHolder(view);
             return viewHolder;
         }

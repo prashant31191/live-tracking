@@ -232,7 +232,7 @@
     <orderEntry type="library" name="com.squareup.okhttp3:logging-interceptor:3.6.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-cast-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-vision-common-license-11.8.0" level="project" />
-    <orderEntry type="library" name="com.prashant31191.azsdk:azsdk-1.0.0" level="project" />
+    <orderEntry type="library" name="com.prashant31191.azsdk:azsdk-1.0.1" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-config-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-gass-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-awareness-license-11.8.0" level="project" />

@@ -65,7 +65,7 @@ public class NetworkMarker extends CustomMarker { //implements Target {
     }
 
 
-  //  public NetworkMarker(Context context, LatLng position, String imageUrl2) {
+  //  public NetworkMarker(Context context, MyLatLng position, String imageUrl2) {
   public NetworkMarker(Context context, CustomMarkerModel customMarkerModel) {
         mContext = context;
         this.position = customMarkerModel.latLng;

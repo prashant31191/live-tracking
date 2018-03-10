@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -216,6 +217,19 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
             });
 
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // auto start view
+                    Log.d(TAG, "'Share Your Location' Button Pressed");
+                    mRequestingLocationUpdates = !mRequestingLocationUpdates;
+                    if (mRequestingLocationUpdates) {
+                        startSharingLocation();
+                        mShareButton.setTitle("Stop Sharing Your Location");
+                    }
+                }
+            }, 1000);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -281,46 +295,11 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                 previousLatLong = mLatLng;
 
                 // Broadcast information on PubNub Channel
-                PubNubManager.broadcastLocation(mPubNub, channelName, location.getLatitude(),location.getLongitude(), location.getAltitude(),speed);
+                PubNubManager.broadcastLocation(mPubNub, channelName, location.getLatitude(),location.getLongitude(), location.getAltitude(),(int)speed);
 
                 // Update Map
                 updateCamera();
                 updatePolyline();
-            }
-
-
-            if (location !=null && location.hasSpeed()) {
-
-                speed = (float) (location.getSpeed() * 3.6);
-
-
-                Formatter fmt = new Formatter(new StringBuilder());
-                fmt.format(Locale.US, "%5.1f", speed);
-                String strCurrentSpeed = fmt.toString();
-                strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
-
-                String strUnits = "km/h";
-
-            //    String speed = String.format(Locale.ENGLISH, "%.0f", speed) + "km/h";
-
-              /*  if (sharedPreferences.getBoolean("miles_per_hour", false)) { // Convert to MPH
-                    speed = String.format(Locale.ENGLISH, "%.0f", responseModel.getLocationLatLong().getSpeed() * 3.6 * 0.62137119) + "mi/h";
-                }
-                */
-                //SpannableString s = new SpannableString(speed);
-                //s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
-
-
-
-                tvSpeed.setText("Speed : " + strCurrentSpeed + " " + strUnits);
-                if(speed < 60)
-                    ivSpeed.setSelected(false);
-                else
-                {
-                    ivSpeed.setSelected(true);
-                }
-
-
             }
 
            /* if (location != null) {
@@ -362,6 +341,10 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                 if (!mRequestingLocationUpdates) {
                     stopSharingLocation();
                     mShareButton.setTitle("Start Sharing Your Location");
+
+
+
+
                 }
                 return true;
             default:
@@ -419,7 +402,6 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
     float speed = 0;
 
    // int i = 0;
-    String strLog = "";
 
     private void updateSpeed(CLocation location) {
         // TODO Auto-generated method stub
@@ -438,27 +420,26 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
                 nCurrentSpeed = location.getSpeed();
             }
 
-            Formatter fmt = new Formatter(new StringBuilder());
-            fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
-            String strCurrentSpeed = fmt.toString();
-            strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
+            //Formatter fmt = new Formatter(new StringBuilder());
+            //fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
+           // String strCurrentSpeed = fmt.toString();
+           // strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
 
             String strUnits = "KM/H";
 
 
-            strLog = strLog +
-                    "\n--------------\n " +
-                    strCurrentSpeed + " " + strUnits +
-                    "\n--------------\n ";
 
-            tvSpeed2.setText("Speed : " + strCurrentSpeed + " " + strUnits);
-            speed = Float.parseFloat(strCurrentSpeed);
+            speed = nCurrentSpeed;
+            tvSpeed2.setText("Speed : " + ((int)speed) + " " + strUnits);
+
             if(speed < 60)
                 ivSpeed.setSelected(false);
             else
             {
                 ivSpeed.setSelected(true);
             }
+
+            tvSpeed.setText("Speed : " + ((int)speed) + " " + strUnits);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -557,26 +538,13 @@ public class GMapsShareLocationActivity extends AppCompatActivity implements OnM
     public void onResponseModel(ResponseModel responseModel) {
 
         if (responseModel != null) {
-            App.showLog(" # OK \n" +
+          /*  App.showLog(" # OK \n" +
                     "Lat : " + responseModel.getLocationLatLong().getLatitude() +
                     "Lng : " + responseModel.getLocationLatLong().getLongitude() +
                     "macAdd : " + responseModel.getMacAdressId() +
                     "\n\n"
 
-            );
-
-            if (responseModel.getLocationLatLong().hasSpeed()) {
-            /*progressBarCircularIndeterminate.setVisibility(View.GONE);*/
-                String speed = String.format(Locale.ENGLISH, "%.0f", responseModel.getLocationLatLong().getSpeed() * 3.6) + "#km/h";
-
-              /*  if (sharedPreferences.getBoolean("miles_per_hour", false)) { // Convert to MPH
-                    speed = String.format(Locale.ENGLISH, "%.0f", responseModel.getLocationLatLong().getSpeed() * 3.6 * 0.62137119) + "mi/h";
-                }
-                */
-                SpannableString s = new SpannableString(speed);
-                s.setSpan(new RelativeSizeSpan(0.25f), s.length() - 4, s.length(), 0);
-                tvSpeed.setText("Speed !: " + s);
-            }
+            );*/
 
             if (responseModel.getLocationLatLong() != null) {
                 CLocation cLocation = new CLocation(responseModel.getLocationLatLong());

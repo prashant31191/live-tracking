@@ -1,23 +1,18 @@
-package drawpath;
+package com.drawpath;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,21 +22,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.azsdk.swipe.SwipeHelper;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
+import com.drawpath.model.RouteListModel;
+import com.drawpath.model.SelectPlaceModel;
 import com.maptracker.App;
 import com.maptracker.R;
 import com.utils.AppFlags;
 import com.utils.CircularImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import drawpath.model.RouteListModel;
-import drawpath.model.SelectPlaceModel;
+import io.realm.Realm;
 
 public class ActFeedList extends AppCompatActivity {
 
-    String TAG = "=ActNotification=";
+    String TAG = "=ActFeedList=";
     RecyclerView recyclerView;
     MaterialRefreshLayout materialRefreshLayout;
     NotificationAdapter notificationAdapter;
@@ -49,44 +47,39 @@ public class ActFeedList extends AppCompatActivity {
     LinearLayout llNodataTag;
 
 
-    String strFrom = "", strTitle = "Feed";
+    String strFrom = "";
     int page = 0;
-    String strTotalResult = "0";
-    public ArrayList<RouteListModel> arrayListAllRouteListModel;
+    public List<RouteListModel> arrayListAllRouteListModel;
 
-    private Paint p = new Paint();
 
     FloatingActionButton fbAddPost;
 
 
-
-    String strTagChooseImage = "choose image";
-    String strTagGallery = "Gallery";
-    String strTagCamera = "Camera";
-    Bitmap photoBitmap;
-    int CAMERA_REQESTCODE = 104;
     String sdCardPath;
-    Uri mImageCaptureUri;
+
+    Realm realm;
 
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ViewGroup.inflate(this, R.layout.act_feed, llContainerSub);
 
         try {
+            App.showLog("=TAG="+TAG);
+
             setContentView(R.layout.act_feed);
 
             getIntentData();
             initialization();
-            
+
             setClickEvent();
 
             sdCardPath = Environment.getExternalStorageDirectory().toString();
             arrayListAllRouteListModel = new ArrayList<>();
             tvNodataTag.setTypeface(App.getFont_Regular());
 
-
+            realm = Realm.getInstance(App.getRealmConfiguration());
+            setAdapterData();
         } catch (Exception e) {
             // TODO: handle exceptione.
             e.printStackTrace();
@@ -110,68 +103,65 @@ public class ActFeedList extends AppCompatActivity {
             //tvNodataTag.setVisibility(View.GONE);
             llNodataTag.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
-            materialRefreshLayout.setLoadMore(true);
+            materialRefreshLayout.setLoadMore(false);
 
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActFeedList.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setHasFixedSize(true);
 
-
             initSwipe();
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void initSwipe() {
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    private void initSwipe() {
+        try {
+            int ButtonWidth = 90;
+            int ButtonText = 18;
 
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+            SwipeHelper swipeHelper = new SwipeHelper(ActFeedList.this, recyclerView, ButtonWidth, ButtonText) {
+                @Override
+                public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Delete",
+                            0,
+                            Color.parseColor("#B30000"),
+                            Color.parseColor("#FFFFFF"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(int pos) {
+                                    // TODO: onDelete
 
-                if (direction == ItemTouchHelper.LEFT) {
-                    notificationAdapter.removeItem(position);
+                                    App.showLog("=Delete====pos==" + pos);
+
+                                    if (notificationAdapter != null) {
+                                        notificationAdapter.removeItem(pos);
+                                    }
+                                }
+                            }
+                    ));
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Share",
+                            0,
+                            Color.parseColor("#FF9502"),
+                            Color.parseColor("#FFFFFF"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(int pos) {
+                                    // TODO: OnTransfer
+                                    App.showLog("=Transfer====pos==" + pos);
+                                }
+                            }
+                    ));
                 }
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-                Bitmap icon;
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
-                    View itemView = viewHolder.itemView;
-                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
-                    float width = height / 3;
-
-                    if (dX < 0) {
-
-
-                        /*p.setColor(Color.RED);
-                        c.drawRect(background,p);*/
-
-                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
-                        p.setColor(Color.GRAY);
-                        p.setTextSize(35);
-                        c.drawText("will be removed", background.centerX(), background.centerY(), p);
-                        //versionViewHolder.tvName.setTypeface(App.getFont_Regular());
-
-                    }
-                }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -239,6 +229,8 @@ public class ActFeedList extends AppCompatActivity {
                     page = 0;
                     arrayListAllRouteListModel = new ArrayList<>();
 
+                    setAdapterData();
+
                     // refresh complete
                     materialRefreshLayout.finishRefresh();
                     // load more refresh complete
@@ -267,28 +259,29 @@ public class ActFeedList extends AppCompatActivity {
         });
     }
 
-private void setAdapterDate()
-{
-    try {
-        arrayListAllRouteListModel = getSaticDataList();
+    private void setAdapterData() {
+        try {
+            arrayListAllRouteListModel = getSaticDataList();
 
-        if (arrayListAllRouteListModel != null && arrayListAllRouteListModel.size() > 0) {
+            if (arrayListAllRouteListModel != null && arrayListAllRouteListModel.size() > 0) {
                 notificationAdapter = new NotificationAdapter(ActFeedList.this, arrayListAllRouteListModel);
                 recyclerView.setAdapter(notificationAdapter);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setVisibility(View.VISIBLE);
-                //tvNodataTag.setVisibility(View.GONE);
+
                 llNodataTag.setVisibility(View.GONE);
+            } else {
+                llNodataTag.setVisibility(View.VISIBLE);
             }
-        }
-    catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-}
-    private ArrayList<RouteListModel> getSaticDataList() {
-        ArrayList<RouteListModel> notificationListModels = new ArrayList<>();
+    }
 
+    private List<RouteListModel> getSaticDataList() {
+        List<RouteListModel> notificationListModels = new ArrayList<>();
+
+    /*    notificationListModels.add(new RouteListModel("this is test", "default.png"));
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
@@ -301,25 +294,28 @@ private void setAdapterDate()
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
         notificationListModels.add(new RouteListModel("this is test", "default.png"));
-        notificationListModels.add(new RouteListModel("this is test", "default.png"));
-        notificationListModels.add(new RouteListModel("this is test", "default.png"));
+        notificationListModels.add(new RouteListModel("this is test", "default.png"));*/
+
+        notificationListModels =   App.fetchOfflineRouteList(realm);
+
+
 
         return notificationListModels;
     }
 
     public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.VersionViewHolder> {
-        ArrayList<RouteListModel> mArrListNotificationListModel;
+        List<RouteListModel> mArrListNotificationListModel;
         Context mContext;
 
 
-        public NotificationAdapter(Context context, ArrayList<RouteListModel> arrayListFollowers) {
+        public NotificationAdapter(Context context, List<RouteListModel> arrayListFollowers) {
             mArrListNotificationListModel = arrayListFollowers;
             mContext = context;
         }
 
         @Override
         public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.raw_feed, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_feed, viewGroup, false);
             VersionViewHolder viewHolder = new VersionViewHolder(view);
             return viewHolder;
         }
@@ -329,7 +325,11 @@ private void setAdapterDate()
         public void onBindViewHolder(final VersionViewHolder versionViewHolder, final int i) {
             try {
                 RouteListModel notificationListModel = mArrListNotificationListModel.get(i);
-                versionViewHolder.tvName.setText(Html.fromHtml("<b>" + notificationListModel.title + "</b>"));
+                versionViewHolder.tvRouteFrom.setText(notificationListModel.route_from);
+                versionViewHolder.tvRouteTo.setText(notificationListModel.route_to);
+                versionViewHolder.tvKms.setText(notificationListModel.route_kms +"\nkms");
+                versionViewHolder.tvTextPost.setText(notificationListModel.detail);
+                versionViewHolder.tvDateTime.setText(App.getLongToYYMMDDDate(notificationListModel.timestamp));
 
 
                 versionViewHolder.cardItemLayout.setOnClickListener(new View.OnClickListener() {
@@ -338,15 +338,28 @@ private void setAdapterDate()
                         try {
 
                             ArrayList<SelectPlaceModel> arrayListSelectPlaceModel = new ArrayList<>();
+                            {
+                                if(mArrListNotificationListModel.get(i).realmListSelectPlaceModel !=null)
+                                {
+                                    for(SelectPlaceModel selectPlaceModel : mArrListNotificationListModel.get(i).realmListSelectPlaceModel)
+                                    {
+                                        arrayListSelectPlaceModel.add(selectPlaceModel);
+                                    }
+                                }
 
-                            /*LatLng latLng = new LatLng()
-                            arrayListSelectPlaceModel.add(new SelectPlaceModel())
-                            */
-                            AppFlags.arrayListSelectPlaceModel = arrayListSelectPlaceModel;
 
-                            /*Intent intent = new Intent(ActFeedList.this, ActFeedDetail.class);
-                            intent.putExtra(AppFlags.tagFrom, "ActFeedList");
-                            startActivity(intent);*/
+                                AppFlags.arrayListSelectPlaceModel = arrayListSelectPlaceModel;
+
+                                Intent intent = new Intent(ActFeedList.this, ActFeedAddDetail.class);
+                                intent.putExtra(AppFlags.tagFrom, "ActFeedList");
+                                if(mArrListNotificationListModel.get(i).detail !=null)
+                                intent.putExtra(AppFlags.tagDetail, mArrListNotificationListModel.get(i).detail);
+                                intent.putExtra(AppFlags.tagIsEdit, "0");
+                                startActivity(intent);
+
+                            }
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -365,17 +378,26 @@ private void setAdapterDate()
 
         public void removeItem(int position) {
 
-            mArrListNotificationListModel.remove(position);
-            notifyItemRemoved(position);
+            try {
+                mArrListNotificationListModel.remove(position);
+                notifyItemRemoved(position);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        notificationAdapter.notifyDataSetChanged();
+                    }
+                },1000);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
             CardView cardItemLayout;
-            TextView tvName, tvDateTime;
-            CircularImageView ivUserPhoto;
+            TextView tvRouteFrom, tvRouteTo,tvKms,tvTextPost, tvDateTime;
             RelativeLayout rlMain;
 
             public VersionViewHolder(View itemView) {
@@ -383,11 +405,20 @@ private void setAdapterDate()
 
                 cardItemLayout = (CardView) itemView.findViewById(R.id.cardlist_item);
                 rlMain = (RelativeLayout) itemView.findViewById(R.id.rlMain);
-                tvName = (TextView) itemView.findViewById(R.id.tvName);
-                ivUserPhoto = (CircularImageView) itemView.findViewById(R.id.ivUserPhoto);
+
+                tvRouteFrom = (TextView) itemView.findViewById(R.id.tvRouteFrom);
+                tvRouteTo = (TextView) itemView.findViewById(R.id.tvRouteTo);
+                tvKms = (TextView) itemView.findViewById(R.id.tvKms);
+                tvTextPost = (TextView) itemView.findViewById(R.id.tvTextPost);
                 tvDateTime = (TextView) itemView.findViewById(R.id.tvDateTime);
 
-                tvName.setTypeface(App.getFont_Regular());
+                tvRouteFrom.setSelected(true);
+                tvRouteTo.setSelected(true);
+
+                tvRouteFrom.setTypeface(App.getFont_Regular());
+                tvRouteTo.setTypeface(App.getFont_Regular());
+                tvKms.setTypeface(App.getFont_Regular());
+                tvTextPost.setTypeface(App.getFont_Regular());
                 tvDateTime.setTypeface(App.getFont_Regular());
             }
 

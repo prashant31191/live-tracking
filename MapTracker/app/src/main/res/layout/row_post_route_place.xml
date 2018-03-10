@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    >
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rlMainItem"
@@ -16,49 +15,47 @@
             android:layout_width="@dimen/m_fd30dp"
             android:layout_height="@dimen/m_fd30dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/shape_circle_white"
-            android:text="1"
-            android:textSize="@dimen/m_12dp"
-            android:textColor="@color/clrBlueDarkRound"
+            android:background="@drawable/shape_circle_white_boder"
             android:gravity="center"
-            />
+            android:text="1"
+            android:textColor="@color/clrBlueDarkRound"
+            android:textSize="@dimen/m_12dp" />
 
         <TextView
             android:id="@+id/tvAddress"
-            android:hint="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/clr_txt_main"
-            android:textColorHint="@color/clr_txt_hint"
-            android:textSize="16dp"
-            android:singleLine="true"
             android:layout_marginLeft="40dp"
             android:layout_toLeftOf="@+id/ivClose"
-            android:layout_toStartOf="@+id/ivClose" />
+            android:layout_toStartOf="@+id/ivClose"
+            android:ellipsize="marquee"
+            android:hint="TextView"
+            android:singleLine="true"
+            android:textColor="@color/clr_txt_main"
+            android:textColorHint="@color/clr_txt_hint"
+            android:textSize="16dp" />
 
         <ImageView
+            android:id="@+id/ivClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_close_black_18dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
 
             android:padding="@dimen/m_10dp"
-            android:id="@+id/ivClose" />
-
-
+            android:src="@drawable/ic_close_black_18dp" />
 
 
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/clr_txt_hint"
-        android:alpha="0.8"
-        android:layout_marginLeft="40dp"
         android:layout_below="@+id/tvAddress"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="@dimen/m_5dp"
-        />
+        android:alpha="0.8"
+        android:background="@color/clr_txt_hint" />
 
 </LinearLayout>

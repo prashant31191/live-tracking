@@ -2,7 +2,7 @@ package com.utils;
 
 import java.util.ArrayList;
 
-import drawpath.model.SelectPlaceModel;
+import com.drawpath.model.SelectPlaceModel;
 
 /**
  * Created by Admin on 12/5/2016.
@@ -24,6 +24,8 @@ public class AppFlags
     public static String tagTotalRouteTimeTextHMS = "total_route_time_HMS";
 
     public static String tagFrom = "tagFrom";
+    public static String tagDetail = "tagDetail";
+    public static String tagIsEdit = "tagIsEdit";
 
     public static String strNetError = "Oops, no internet connection";
 
